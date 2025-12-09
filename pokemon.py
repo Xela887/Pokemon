@@ -24,10 +24,6 @@ class Spieler(Trainer):
     def __init__(self, name, pokemonliste, active_pokemon, pokemon_team):
         super().__init__(name, pokemonliste, active_pokemon, pokemon_team)
 
-    def swap_pokemon(self, slot):
-        self.active_pokemon = self.pokemon_team[slot]
-
-
 class Enemy(Trainer):
     def __init__(self, name, pokemonliste, active_pokemon, pokemon_team):
         super().__init__(name, pokemonliste, active_pokemon, pokemon_team)

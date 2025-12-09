@@ -222,6 +222,11 @@ class Battle:
                             return "game_over_enemy"
 
 
+    def swap_pokemon_in_battle(self, slot):
+        if self.spieler_poke_team(slot).currentkp > 0:
+            self.spieler_active_poke = self.spieler_poke_team[slot]
+
+
     # Spieler Pokemon Team resetten
     def reset_player_team(self):
         # Alle Pokemon ins Spieler Team zurück

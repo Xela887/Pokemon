@@ -6,7 +6,7 @@ import random
 from Battle_Klasse import Battle
 
 def provocate_merge_conflict():
-    idk_just_do_it = "yeah exactly"
+    idk_just_do_it = "yeah fffff"
 
 class Trainer:
     def __init__(self, name, pokemonliste=None, active_pokemon=None, pokemon_team=[]):

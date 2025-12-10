@@ -20,7 +20,7 @@
 | 739 |Krabbox                      |Kampf    |         |47     |82     |57     |42     |47     |63     |
 | 740 |Krawell                      |Kampf    |Eis      |97     |132    |77     |62     |67     |43     |
 | 741 |Choreogel Flamenco-Stil      |Feuer    |Flug     |75     |70     |70     |98     |70     |93     |
-| 741 |Choreogel Cheerleading-Stil  |Feuer    |Flug     |75     |70     |70     |98     |70     |93     |
+| 741 |Choreogel Cheerleading-Stil  |Elektro  |Flug     |75     |70     |70     |98     |70     |93     |
 | 741 |Choreogel Hula-Stil          |Psycho   |Flug     |75     |70     |70     |98     |70     |93     |
 | 741 |Choreogel Buyo-Stil          |Geist    |Flug     |75     |70     |70     |98     |70     |93     |
 | 742 |Wommel                       |Käfer    |Fee      |40     |45     |40     |55     |40     |84     |

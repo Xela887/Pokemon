@@ -51,7 +51,7 @@ class Altar_For_Sacrifices:
                 new_pokemon = random.choice(all_pokemon)
                 if new_pokemon not in spieler.pokemonliste and getattr(new_pokemon(), "level") <= get_average_stat("level", "pokelist"):
                     break
-            spieler.add_pokemon(new_pokemon(attacken=[zufalls_attacke(dmgtype="physisch"), zufalls_attacke(dmgtype="spezial")]))
+            spieler.add_pokemon(new_pokemon(attacken=[zufalls_attacke(dmgtype="physisch", typ=getattr(new_pokemon(), "typ")[0]), zufalls_attacke(dmgtype="spezial", typ=getattr(new_pokemon(), "typ")[0])]))
 
     def sacrifice_for_fp(self):
         if self.pokemon_bodies >= self.sac_for_fp_cost:

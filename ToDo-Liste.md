@@ -6,3 +6,4 @@
 -Entwickeln von Pokemon möglich machen  
 -Speichern und laden(Spielername, Pokemon, Altarwerte, ...) in json  
 -Effektivitäten (Funktion die zwei Typen nimmt und die Effektivität ausspukt  
+-Bilder den Pokemon Klassen hinzufügen

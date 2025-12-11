@@ -27,7 +27,7 @@ class Battle:
                       * Effektivitaet.get_effectiveness(attacker.attacken[1].typ, defender.typ[0]), 2)
 
     def __active_fainted(self, active_pokemon) -> bool:
-        if active_pokemon.currentkp < 0:
+        if active_pokemon.currentkp <= 0:
             active_pokemon.currentkp = 0
             return True
         return False

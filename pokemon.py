@@ -1,13 +1,13 @@
-import pygame
-import sys
 from Angriff_Klassen import *
 from Pokemon_Klassen import *
-import random
 from Battle_Klasse import Battle
+import random
+import pygame
+import sys
 import json
+import os
 import tkinter as tk
 from tkinter import filedialog
-import os
 
 
 class Trainer:

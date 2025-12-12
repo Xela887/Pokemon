@@ -1,15 +1,11 @@
-from Angriff_Klassen import *
-from Pokemon_Klassen import *
-from Battle_Klasse import Battle
-import random
 import pygame
 import sys
-import json
-import os
-import tkinter as tk
-from tkinter import filedialog
+import Angriff_Klassen
+import random
 
+# Klassen
 
+# Trainer
 class Trainer:
     def __init__(self, name, pokemonliste=None, active_pokemon=None, pokemon_team=[]):
         self.name = name
@@ -24,6 +20,7 @@ class Trainer:
         self.pokemonliste.append(pokemon)
         return
 
+# Spieler
 class Spieler(Trainer):
     def __init__(self, name, pokemonliste, active_pokemon, pokemon_team):
         super().__init__(name, pokemonliste, active_pokemon, pokemon_team)
@@ -32,108 +29,1747 @@ class Spieler(Trainer):
         self.active_pokemon = self.pokemon_team[slot]
 
 
+# Klasse des Gegnerischen Trainer
 class Enemy(Trainer):
     def __init__(self, name, pokemonliste, active_pokemon, pokemon_team):
         super().__init__(name, pokemonliste, active_pokemon, pokemon_team)
 
+# Pokemon
+class pokemon:
+    def __init__(self, name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp = None, fp=0):
+        self.name = name
+        self.maxkp = maxkp
+        if currentkp is None:
+            self.currentkp = maxkp
+        else:
+            self.currentkp = currentkp
+        self.ep = 0
+        self.level = level
+        self.typ = typ
+        self.atk = atk
+        self.defence = defence
+        self.spatk = spatk
+        self.spdef = spdef
+        self.init = init
+        self.attacken = attacken
+        self.fp = fp
 
-class Altar_For_Sacrifices:
-    def __init__(self, pokemon_bodies, trainer_bodies, fp_amount, sacrifice_count=0):
-        self.pokemon_bodies = pokemon_bodies
-        self.trainer_bodies = trainer_bodies
-        self.sacrifice_count = sacrifice_count
-        self.change_attack_cost = 5
-        self.sac_for_fp_cost = 5
-        self.sac_for_fp_amount = 3
-        self.fp_amount = fp_amount
-
-    def sacrifice_for_pokemon(self):
-        if self.pokemon_bodies >= 1 and self.trainer_bodies >= 1:
-            self.pokemon_bodies = 0
-            self.trainer_bodies = 0
-            new_pokemon = random.choice(all_pokemon)
-            roll_new = False
-            while True:
-                for poke in spieler.pokemonliste:
-                    if new_pokemon().name == poke.name and new_pokemon().level <= get_average_stat("level", pokelist):
-                        roll_new = True
-                if roll_new == False:
-                    break
-                if roll_new == True:
-                    new_pokemon = random.choice(all_pokemon)
-                    roll_new = False
-            spieler.add_pokemon(new_pokemon(attacken=[zufalls_attacke(dmgtype="physisch", typ=getattr(new_pokemon(), "typ")[0]), zufalls_attacke(dmgtype="spezial", typ=getattr(new_pokemon(), "typ")[0])]))
-
-    def sacrifice_for_fp(self):
-        if self.pokemon_bodies >= self.sac_for_fp_cost:
-            amount = self.pokemon_bodies // self.sac_for_fp_cost
-            self.pokemon_bodies -= amount * self.sac_for_fp_cost
-            self.fp_amount += amount * self.sac_for_fp_amount
+#Individuelle Pokemon als Unterklasse von "Pokemon".
+#Stats kommen von https://pokewiki.de/Liste_der_Pok%C3%A9mon_nach_Alola-Pok%C3%A9dex
 
 
-# Alle Pokemon
+class Bauz(pokemon):
+    def __init__(self, name="Bauz", maxkp=68, typ=["Pflanze", "Flug"], atk=55, defence=55, spatk=50, spdef=50, level=1, init=42, currentkp=68, attacken=2, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, level, init, currentkp, attacken, fp)
+
+
+class Arboretoss(pokemon):
+    def __init__(self, name="Arboretoss", maxkp=78, typ=["Pflanze", "Flug"], atk=75, defence=75, spatk=70, spdef=70, level=10, init=52, currentkp=78, attacken=2, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, level, init, currentkp, attacken, fp)
+
+
+class Silvarro(pokemon):
+    def __init__(self, name="Silvarro", maxkp=78, typ=["Pflanze", "Geist"], atk=107, defence=75, spatk=100, spdef=100, level=30, init=70, currentkp=78, attacken=2, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, level, init, currentkp, attacken, fp)
+
+
+class Flamiau(pokemon):
+    def __init__(self, name="Flamiau", maxkp=45, typ=["Feuer"], atk=65, defence=40, spatk=60, spdef=40, level=1, init=70, currentkp=45, attacken=2, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, level, init, currentkp, attacken, fp)
+
+
+class Miezunder(pokemon):
+    def __init__(self, name="Miezunder", maxkp=65, typ=["Feuer"], atk=85, defence=50, spatk=80, spdef=50, level=10, init=90, currentkp=65, attacken=2, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, level, init, currentkp, attacken, fp)
+
+
+class Fuegro(pokemon):
+    def __init__(self, name="Fuegro", maxkp=95, typ=["Feuer", "Unlicht"], atk=115, defence=90, spatk=80, spdef=90, level=20, init=60, currentkp=95, attacken=2, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, level, init, currentkp, attacken, fp)
+
+
+class Robball(pokemon):
+    def __init__(self, name="Robball", maxkp=50, typ=["Wasser"], atk=50, defence=54, spatk=66, spdef=56, level=1, init=40, currentkp=50, attacken=2, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, level, init, currentkp, attacken, fp)
+
+
+class Marikeck(pokemon):
+    def __init__(self, name="Marikeck", maxkp=60, typ=["Wasser"], atk=69, defence=69, spatk=91, spdef=81, level=10, init=50, currentkp=60, attacken=2, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, level, init, currentkp, attacken, fp)
+
+
+class Primarene(pokemon):
+    def __init__(self, name="Primarene", maxkp=80, typ=["Wasser", "Fee"], atk=74, defence=74, spatk=126, spdef=116, init=60, attacken=2, level=20, currentkp=80, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Peppeck(pokemon):
+    def __init__(self, name="Peppeck", maxkp=35, typ=["Normal", "Flug"], atk=75, defence=30, spatk=30, spdef=30, init=65, attacken=2, level=1, currentkp=35, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Trompeck(pokemon):
+    def __init__(self, name="Trompeck", maxkp=55, typ=["Normal", "Flug"], atk=85, defence=50, spatk=40, spdef=50, init=75, attacken=2, level=10, currentkp=55, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Tukanon(pokemon):
+    def __init__(self, name="Tukanon", maxkp=80, typ=["Normal", "Flug"], atk=120, defence=75, spatk=75, spdef=75, init=60, attacken=2, level=20, currentkp=80, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Mangunior(pokemon):
+    def __init__(self, name="Mangunior", maxkp=48, typ=["Normal"], atk=70, defence=30, spatk=30, spdef=30, init=45, attacken=2, level=1, currentkp=48, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Manguspektor(pokemon):
+    def __init__(self, name="Manguspektor", maxkp=88, typ=["Normal"], atk=110, defence=60, spatk=55, spdef=60, init=45, attacken=2, level=10, currentkp=88, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Rattfratz(pokemon):
+    def __init__(self, name="Rattfratz", maxkp=30, typ=["Normal"], atk=56, defence=35, spatk=25, spdef=35, init=72, attacken=2, level=1, currentkp=30, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Rattikarl(pokemon):
+    def __init__(self, name="Rattikarl", maxkp=55, typ=["Normal"], atk=81, defence=60, spatk=50, spdef=70, init=97, attacken=2, level=10, currentkp=55, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Raupy(pokemon):
+    def __init__(self, name="Raupy", maxkp=45, typ=["Käfer"], atk=30, defence=35, spatk=20, spdef=20, init=45, attacken=2, level=1, currentkp=45, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Safcon(pokemon):
+    def __init__(self, name="Safcon", maxkp=50, typ=["Käfer"], atk=20, defence=55, spatk=25, spdef=25, init=30, attacken=2, level=10, currentkp=50, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Smettbo(pokemon):
+    def __init__(self, name="Smettbo", maxkp=60, typ=["Käfer","Flug"], atk=45, defence=50, spatk=90, spdef=80, init=70, attacken=2, level=20, currentkp=60, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Ledyba(pokemon):
+    def __init__(self, name="Ledyba", maxkp=40, typ=["Käfer","Flug"], atk=30, defence=40, spatk=55, spdef=55, init=60, attacken=2, level=1, currentkp=40, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Ledian(pokemon):
+    def __init__(self, name="Ledian", maxkp=55, typ=["Käfer","Flug"], atk=50, defence=60, spatk=75, spdef=85, init=90, attacken=2, level=10, currentkp=55, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Webarak(pokemon):
+    def __init__(self, name="Webarak", maxkp=40, typ=["Käfer","Gift"], atk=45, defence=50, spatk=55, spdef=40, init=75, attacken=2, level=1, currentkp=40, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Ariados(pokemon):
+    def __init__(self, name="Ariados", maxkp=70, typ=["Käfer","Gift"], atk=90, defence=70, spatk=80, spdef=60, init=90, attacken=2, level=10, currentkp=70, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Pichu(pokemon):
+    def __init__(self, name="Pichu", maxkp=20, typ=["Elektro"], atk=40, defence=15, spatk=35, spdef=35, init=60, attacken=2, level=1, currentkp=20, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Pikachu(pokemon):
+    def __init__(self, name="Pikachu", maxkp=35, typ=["Elektro"], atk=55, defence=30, spatk=50, spdef=40, init=90, attacken=2, level=10, currentkp=35, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Raichu(pokemon):
+    def __init__(self, name="Raichu", maxkp=60, typ=["Elektro"], atk=90, defence=55, spatk=90, spdef=80, init=110, attacken=2, level=20, currentkp=60, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Mabula(pokemon):
+    def __init__(self, name="Mabula", maxkp=47, typ=["Käfer"], atk=62, defence=45, spatk=55, spdef=45, init=46, attacken=2, level=1, currentkp=47, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Akkup(pokemon):
+    def __init__(self, name="Akkup", maxkp=57, typ=["Käfer","Elektro"], atk=82, defence=95, spatk=55, spdef=75, init=36, attacken=2, level=10, currentkp=57, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Donarion(pokemon):
+    def __init__(self, name="Donarion", maxkp=77, typ=["Käfer","Elektro"], atk=70, defence=90, spatk=145, spdef=75, init=43, attacken=2, level=20, currentkp=77, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Mobai(pokemon):
+    def __init__(self, name="Mobai", maxkp=40, typ=["Kampf"], atk=62, defence=44, spatk=48, spdef=43, init=55, attacken=2, level=1, currentkp=40, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Mogelbaum(pokemon):
+    def __init__(self, name="Mogelbaum", maxkp=60, typ=["Kampf"], atk=82, defence=74, spatk=78, spdef=73, init=65, attacken=2, level=10, currentkp=60, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Wonneira(pokemon):
+    def __init__(self, name="Wonneira", maxkp=100, typ=["Normal"], atk=5, defence=5, spatk=15, spdef=65, init=30, attacken=2, level=1, currentkp=100, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Chaneira(pokemon):
+    def __init__(self, name="Chaneira", maxkp=250, typ=["Normal"], atk=5, defence=5, spatk=35, spdef=105, init=50, attacken=2, level=10, currentkp=250, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Heiteira(pokemon):
+    def __init__(self, name="Heiteira", maxkp=360, typ=["Normal"], atk=5, defence=5, spatk=45, spdef=125, init=60, attacken=2, level=20, currentkp=360, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Mampfaxo(pokemon):
+    def __init__(self, name="Mampfaxo", maxkp=160, typ=["Normal"], atk=130, defence=80, spatk=65, spdef=85, init=50, attacken=2, level=1, currentkp=160, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Relaxa(pokemon):
+    def __init__(self, name="Relaxa", maxkp=330, typ=["Normal"], atk=160, defence=110, spatk=95, spdef=115, init=30, attacken=2, level=10, currentkp=330, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Flegmon(pokemon):
+    def __init__(self, name="Flegmon", maxkp=90, typ=["Wasser","Psycho"], atk=65, defence=65, spatk=40, spdef=40, init=15, attacken=2, level=1, currentkp=90, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Lahmus(pokemon):
+    def __init__(self, name="Lahmus", maxkp=140, typ=["Wasser","Psycho"], atk=85, defence=85, spatk=70, spdef=70, init=30, attacken=2, level=10, currentkp=140, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Laschoking(pokemon):
+    def __init__(self, name="Laschoking", maxkp=190, typ=["Wasser","Psycho"], atk=105, defence=105, spatk=90, spdef=90, init=40, attacken=2, level=20, currentkp=190, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Wingul(pokemon):
+    def __init__(self, name="Wingul", maxkp=40, typ=["Wasser","Flug"], atk=30, defence=30, spatk=55, spdef=30, init=85, attacken=2, level=1, currentkp=40, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Pelipper(pokemon):
+    def __init__(self, name="Pelipper", maxkp=60, typ=["Wasser","Flug"], atk=50, defence=100, spatk=95, spdef=70, init=65, attacken=2, level=10, currentkp=60, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Abra(pokemon):
+    def __init__(self, name="Abra", maxkp=25, typ=["Psycho"], atk=20, defence=15, spatk=105, spdef=55, init=90, attacken=2, level=1, currentkp=25, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Kadabra(pokemon):
+    def __init__(self, name="Kadabra", maxkp=40, typ=["Psycho"], atk=35, defence=30, spatk=120, spdef=70, init=105, attacken=2, level=10, currentkp=40, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Simsala(pokemon):
+    def __init__(self, name="Simsala", maxkp=55, typ=["Psycho"], atk=50, defence=45, spatk=135, spdef=95, init=120, attacken=2, level=20, currentkp=55, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Mauzi(pokemon):
+    def __init__(self, name="Mauzi", maxkp=40, typ=["Normal"], atk=45, defence=35, spatk=40, spdef=40, init=90, attacken=2, level=1, currentkp=40, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Snobilikat(pokemon):
+    def __init__(self, name="Snobilikat", maxkp=65, typ=["Normal"], atk=70, defence=60, spatk=65, spdef=65, init=115, attacken=2, level=10, currentkp=65, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Magnetilo(pokemon):
+    def __init__(self, name="Magnetilo", maxkp=25, typ=["Elektro","Stahl"], atk=35, defence=70, spatk=95, spdef=55, init=45, attacken=2, level=1, currentkp=25, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Magneton(pokemon):
+    def __init__(self, name="Magneton", maxkp=50, typ=["Elektro","Stahl"], atk=60, defence=95, spatk=120, spdef=70, init=70, attacken=2, level=10, currentkp=50, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Magnezone(pokemon):
+    def __init__(self, name="Magnezone", maxkp=70, typ=["Elektro","Stahl"], atk=70, defence=115, spatk=150, spdef=90, init=80, attacken=2, level=20, currentkp=70, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Sleima(pokemon):
+    def __init__(self, name="Sleima", maxkp=40, typ=["Gift"], atk=65, defence=64, spatk=40, spdef=40, init=32, attacken=2, level=1, currentkp=40, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Sleimok(pokemon):
+    def __init__(self, name="Sleimok", maxkp=65, typ=["Gift"], atk=90, defence=89, spatk=55, spdef=55, init=42, attacken=2, level=10, currentkp=65, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Fukano(pokemon):
+    def __init__(self, name="Fukano", maxkp=45, typ=["Feuer"], atk=60, defence=40, spatk=50, spdef=50, init=65, attacken=2, level=1, currentkp=45, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Arkani(pokemon):
+    def __init__(self, name="Arkani", maxkp=75, typ=["Feuer"], atk=100, defence=70, spatk=80, spdef=80, init=95, attacken=2, level=10, currentkp=75, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Traumato(pokemon):
+    def __init__(self, name="Traumato", maxkp=60, typ=["Psycho"], atk=65, defence=60, spatk=90, spdef=75, init=55, attacken=2, level=1, currentkp=60, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Hypno(pokemon):
+    def __init__(self, name="Hypno", maxkp=85, typ=["Psycho"], atk=90, defence=85, spatk=115, spdef=100, init=70, attacken=2, level=10, currentkp=85, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Makuhita(pokemon):
+    def __init__(self, name="Makuhita", maxkp=72, typ=["Kampf"], atk=60, defence=30, spatk=20, spdef=30, init=25, attacken=2, level=1, currentkp=72, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Hariyama(pokemon):
+    def __init__(self, name="Hariyama", maxkp=144, typ=["Kampf"], atk=120, defence=60, spatk=40, spdef=60, init=50, attacken=2, level=10, currentkp=144, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Farbeagle(pokemon):
+    def __init__(self, name="Farbeagle", maxkp=59, typ=["Normal"], atk=85, defence=50, spatk=55, spdef=50, init=92, attacken=2, level=1, currentkp=59, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Krabbox(pokemon):
+    def __init__(self, name="Krabbox", maxkp=47, typ=["Kampf"], atk=82, defence=57, spatk=42, spdef=47, init=63, attacken=2, level=1, currentkp=47, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Krawell(pokemon):
+    def __init__(self, name="Krawell", maxkp=97, typ=["Kampf", "Eis"], atk=132, defence=77, spatk=62, spdef=67, init=43, attacken=2, level=10, currentkp=97, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Nebulak(pokemon):
+    def __init__(self, name="Nebulak", maxkp=30, typ=["Geist","Gift"], atk=40, defence=35, spatk=50, spdef=70, init=80, attacken=2, level=1, currentkp=30, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Alpollo(pokemon):
+    def __init__(self, name="Alpollo", maxkp=45, typ=["Geist","Gift"], atk=50, defence=45, spatk=65, spdef=85, init=95, attacken=2, level=10, currentkp=45, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Gengar(pokemon):
+    def __init__(self, name="Gengar", maxkp=60, typ=["Geist","Gift"], atk=65, defence=60, spatk=130, spdef=75, init=110, attacken=2, level=20, currentkp=60, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Driftlon(pokemon):
+    def __init__(self, name="Driftlon", maxkp=110, typ=["Geist","Flug"], atk=60, defence=30, spatk=80, spdef=50, init=110, attacken=2, level=1, currentkp=110, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Drifzepeli(pokemon):
+    def __init__(self, name="Drifzepeli", maxkp=150, typ=["Geist","Flug"], atk=80, defence=44, spatk=90, spdef=54, init=100, attacken=2, level=10, currentkp=150, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Traunfugil(pokemon):
+    def __init__(self, name="Traunfugil", maxkp=190, typ=["Geist"], atk=100, defence=60, spatk=100, spdef=70, init=80, attacken=2, level=20, currentkp=190, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Traunmagil(pokemon):
+    def __init__(self, name="Traunmagil", maxkp=45, typ=["Geist"], atk=50, defence=45, spatk=115, spdef=55, init=95, attacken=2, level=1, currentkp=45, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Zubat(pokemon):
+    def __init__(self, name="Zubat", maxkp=40, typ=["Gift","Flug"], atk=45, defence=35, spatk=30, spdef=40, init=55, attacken=2, level=1, currentkp=40, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Golbat(pokemon):
+    def __init__(self, name="Golbat", maxkp=75, typ=["Gift","Flug"], atk=80, defence=70, spatk=65, spdef=75, init=90, attacken=2, level=10, currentkp=75, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Iksbat(pokemon):
+    def __init__(self, name="Iksbat", maxkp=85, typ=["Gift","Flug"], atk=90, defence=80, spatk=75, spdef=85, init=100, attacken=2, level=20, currentkp=85, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+class Digda(pokemon):
+    def __init__(self, name="Digda", maxkp=10, typ=["Boden"], atk=55, defence=25, spatk=35, spdef=45, init=95, attacken=2, level=1, currentkp=10, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Digdri(pokemon):
+    def __init__(self, name="Digdri", maxkp=35, typ=["Boden"], atk=100, defence=50, spatk=70, spdef=80, init=120, attacken=2, level=10, currentkp=35, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Habitak(pokemon):
+    def __init__(self, name="Habitak", maxkp=40, typ=["Normal","Flug"], atk=60, defence=30, spatk=31, spdef=31, init=70, attacken=2, level=1, currentkp=40, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Ibitak(pokemon):
+    def __init__(self, name="Ibitak", maxkp=65, typ=["Normal","Flug"], atk=90, defence=65, spatk=61, spdef=61, init=100, attacken=2, level=10, currentkp=65, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Geronimatz(pokemon):
+    def __init__(self, name="Geronimatz", maxkp=85, typ=["Normal","Flug"], atk=130, defence=95, spatk=71, spdef=71, init=121, attacken=2, level=20, currentkp=85, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Washakwil(pokemon):
+    def __init__(self, name="Washakwil", maxkp=60, typ=["Normal","Kampf"], atk=80, defence=50, spatk=40, spdef=50, init=65, attacken=2, level=1, currentkp=60, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Slallyk(pokemon):
+    def __init__(self, name="Slallyk", maxkp=90, typ=["Unlicht","Flug"], atk=120, defence=70, spatk=60, spdef=70, init=85, attacken=2, level=10, currentkp=90, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Grypheldis(pokemon):
+    def __init__(self, name="Grypheldis", maxkp=130, typ=["Unlicht","Flug"], atk=160, defence=90, spatk=80, spdef=90, init=105, attacken=2, level=20, currentkp=130, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Menki(pokemon):
+    def __init__(self, name="Menki", maxkp=40, typ=["Kampf"], atk=80, defence=35, spatk=35, spdef=45, init=70, attacken=2, level=1, currentkp=40, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Rasaff(pokemon):
+    def __init__(self, name="Rasaff", maxkp=70, typ=["Kampf"], atk=120, defence=65, spatk=65, spdef=75, init=100, attacken=2, level=10, currentkp=70, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Botogel(pokemon):
+    def __init__(self, name="Botogel", maxkp=50, typ=["Eis","Flug"], atk=70, defence=50, spatk=50, spdef=50, init=65, attacken=2, level=1, currentkp=50, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Choreogel_Feuer(pokemon):
+    def __init__(self, name="Choreogel (Feuer)", maxkp=80, typ=["Feuer","Flug"], atk=90, defence=70, spatk=100, spdef=60, init=85, attacken=2, level=10, currentkp=80, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Choreogel_Psycho(pokemon):
+    def __init__(self, name="Choreogel (Psycho)", maxkp=80, typ=["Psycho","Flug"], atk=70, defence=80, spatk=120, spdef=60, init=85, attacken=2, level=10, currentkp=80, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Choreogel_Geist(pokemon):
+    def __init__(self, name="Choreogel (Geist)", maxkp=80, typ=["Geist","Flug"], atk=80, defence=70, spatk=110, spdef=60, init=85, attacken=2, level=10, currentkp=80, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Choreogel_Elektro(pokemon):
+    def __init__(self, name="Choreogel (Elektro)", maxkp=80, typ=["Elektro","Flug"], atk=75, defence=75, spatk=115, spdef=60, init=85, attacken=2, level=10, currentkp=80, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Wommel(pokemon):
+    def __init__(self, name="Wommel", maxkp=40, typ=["Käfer","Fee"], atk=45, defence=40, spatk=55, spdef=40, init=84, attacken=2, level=1, currentkp=40, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Bandelby(pokemon):
+    def __init__(self, name="Bandelby", maxkp=60, typ=["Käfer","Fee"], atk=55, defence=60, spatk=95, spdef=70, init=124, attacken=2, level=10, currentkp=60, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Lilminip(pokemon):
+    def __init__(self, name="Lilminip", maxkp=45, typ=["Pflanze"], atk=30, defence=55, spatk=65, spdef=75, init=40, attacken=2, level=1, currentkp=45, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Dressella(pokemon):
+    def __init__(self, name="Dressella", maxkp=70, typ=["Pflanze"], atk=60, defence=75, spatk=110, spdef=75, init=90, attacken=2, level=1, currentkp=70, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Waumboll(pokemon):
+    def __init__(self, name="Waumboll", maxkp=40, typ=["Pflanze","Fee"], atk=27, defence=60, spatk=37, spdef=50, init=66, attacken=2, level=1, currentkp=40, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Elfun(pokemon):
+    def __init__(self, name="Elfun", maxkp=60, typ=["Pflanze","Fee"], atk=67, defence=85, spatk=77, spdef=75, init=116, attacken=2, level=10, currentkp=60, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Enton(pokemon):
+    def __init__(self, name="Enton", maxkp=50, typ=["Wasser"], atk=52, defence=48, spatk=65, spdef=50, init=55, attacken=2, level=1, currentkp=50, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Entoron(pokemon):
+    def __init__(self, name="Entoron", maxkp=80, typ=["Wasser"], atk=82, defence=78, spatk=95, spdef=80, init=85, attacken=2, level=10, currentkp=80, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Karpador(pokemon):
+    def __init__(self, name="Karpador", maxkp=20, typ=["Wasser"], atk=10, defence=55, spatk=15, spdef=20, init=80, attacken=2, level=1, currentkp=20, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Garados(pokemon):
+    def __init__(self, name="Garados", maxkp=95, typ=["Wasser","Flug"], atk=125, defence=79, spatk=60, spdef=100, init=81, attacken=2, level=10, currentkp=95, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Schmerbe(pokemon):
+    def __init__(self, name="Schmerbe", maxkp=50, typ=["Wasser","Boden"], atk=48, defence=43, spatk=46, spdef=41, init=60, attacken=2, level=1, currentkp=50, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Welsar(pokemon):
+    def __init__(self, name="Welsar", maxkp=110, typ=["Wasser","Boden"], atk=78, defence=73, spatk=76, spdef=71, init=60, attacken=2, level=10, currentkp=110, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Machollo(pokemon):
+    def __init__(self, name="Machollo", maxkp=70, typ=["Kampf"], atk=80, defence=50, spatk=35, spdef=35, init=35, attacken=2, level=1, currentkp=70, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Maschock(pokemon):
+    def __init__(self, name="Maschock", maxkp=80, typ=["Kampf"], atk=100, defence=70, spatk=50, spdef=60, init=45, attacken=2, level=10, currentkp=80, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Machomei(pokemon):
+    def __init__(self, name="Machomei", maxkp=90, typ=["Kampf"], atk=130, defence=80, spatk=65, spdef=85, init=55, attacken=2, level=20, currentkp=90, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Kiesling(pokemon):
+    def __init__(self, name="Kiesling", maxkp=55, typ=["Gestein"], atk=75, defence=85, spatk=25, spdef=25, init=15, attacken=2, level=1, currentkp=55, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Sedimantur(pokemon):
+    def __init__(self, name="Sedimantur", maxkp=70, typ=["Gestein"], atk=105, defence=105, spatk=50, spdef=40, init=20, attacken=2, level=10, currentkp=70, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Brockoloss(pokemon):
+    def __init__(self, name="Brockoloss", maxkp=85, typ=["Gestein"], atk=135, defence=130, spatk=60, spdef=80, init=25, attacken=2, level=20, currentkp=85, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Rocara(pokemon):
+    def __init__(self, name="Rocara", maxkp=50, typ=["Gestein","Fee"], atk=50, defence=150, spatk=50, spdef=150, init=50, attacken=2, level=1, currentkp=50, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Zobiris(pokemon):
+    def __init__(self, name="Zobiris", maxkp=50, typ=["Unlicht","Geist"], atk=75, defence=75, spatk=65, spdef=65, init=50, attacken=2, level=1, currentkp=50, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Wuffels(pokemon):
+    def __init__(self, name="Wuffels", maxkp=45, typ=["Gestein"], atk=65, defence=40, spatk=30, spdef=40, init=60, attacken=2, level=1, currentkp=45, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Wolwerock(pokemon):
+    def __init__(self, name="Wolwerock", maxkp=70, typ=["Gestein"], atk=90, defence=115, spatk=60, spdef=60, init=65, attacken=2, level=1, currentkp=70, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Pandir(pokemon):
+    def __init__(self, name="Pandir", maxkp=60, typ=["Normal"], atk=60, defence=60, spatk=60, spdef=60, init=60, attacken=2, level=1, currentkp=60, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Tentacha(pokemon):
+    def __init__(self, name="Tentacha", maxkp=40, typ=["Wasser","Gift"], atk=40, defence=35, spatk=50, spdef=100, init=70, attacken=2, level=1, currentkp=40, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Tentoxa(pokemon):
+    def __init__(self, name="Tentoxa", maxkp=80, typ=["Wasser","Gift"], atk=70, defence=65, spatk=80, spdef=120, init=100, attacken=2, level=10, currentkp=80, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Finneon(pokemon):
+    def __init__(self, name="Finneon", maxkp=49, typ=["Wasser"], atk=49, defence=56, spatk=49, spdef=61, init=66, attacken=2, level=1, currentkp=49, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Lumineon(pokemon):
+    def __init__(self, name="Lumineon", maxkp=69, typ=["Wasser"], atk=69, defence=76, spatk=69, spdef=86, init=91, attacken=2, level=10, currentkp=69, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Lusardin(pokemon):
+    def __init__(self, name="Lusardin", maxkp=45, typ=["Wasser"], atk=20, defence=20, spatk=25, spdef=25, init=40, attacken=2, level=1, currentkp=45, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Schwarmform_Lusardin(pokemon):
+    def __init__(self, name="Schwarmform Lusardin", maxkp=45, typ=["Wasser"], atk=140, defence=130, spatk=140, spdef=135, init=30, attacken=2, level=1, currentkp=45, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Liebiskus(pokemon):
+    def __init__(self, name="Liebiskus", maxkp=43, typ=["Wasser"], atk=30, defence=55, spatk=40, spdef=65, init=97, attacken=2, level=1, currentkp=43, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Corasonn(pokemon):
+    def __init__(self, name="Corasonn", maxkp=65, typ=["Wasser","Gestein"], atk=55, defence=95, spatk=65, spdef=95, init=35, attacken=2, level=1, currentkp=65, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Garstella(pokemon):
+    def __init__(self, name="Garstella", maxkp=50, typ=["Gift","Wasser"], atk=53, defence=62, spatk=43, spdef=52, init=45, attacken=2, level=1, currentkp=50, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Aggrostella(pokemon):
+    def __init__(self, name="Aggrostella", maxkp=50, typ=["Gift","Wasser"], atk=63, defence=152, spatk=53, spdef=142, init=35, attacken=2, level=10, currentkp=50, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Muschas(pokemon):
+    def __init__(self, name="Muschas", maxkp=30, typ=["Wasser"], atk=65, defence=100, spatk=45, spdef=25, init=40, attacken=2, level=1, currentkp=30, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Austos(pokemon):
+    def __init__(self, name="Austos", maxkp=50, typ=["Wasser","Eis"], atk=95, defence=180, spatk=85, spdef=45, init=70, attacken=2, level=10, currentkp=50, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Kindwurm(pokemon):
+    def __init__(self, name="Kindwurm", maxkp=45, typ=["Drache"], atk=75, defence=60, spatk=40, spdef=30, init=50, attacken=2, level=1, currentkp=45, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Draschel(pokemon):
+    def __init__(self, name="Draschel", maxkp=65, typ=["Drache"], atk=95, defence=100, spatk=60, spdef=50, init=50, attacken=2, level=10, currentkp=65, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Brutalanda(pokemon):
+    def __init__(self, name="Brutalanda", maxkp=95, typ=["Drache","Flug"], atk=135, defence=80, spatk=110, spdef=80, init=100, attacken=2, level=20, currentkp=95, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Yorkleff(pokemon):
+    def __init__(self, name="Yorkleff", maxkp=45, typ=["Normal"], atk=60, defence=45, spatk=25, spdef=45, init=55, attacken=2, level=1, currentkp=45, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Terribark(pokemon):
+    def __init__(self, name="Terribark", maxkp=65, typ=["Normal"], atk=80, defence=65, spatk=35, spdef=65, init=60, attacken=2, level=10, currentkp=65, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Bissbark(pokemon):
+    def __init__(self, name="Bissbark", maxkp=85, typ=["Normal"], atk=110, defence=90, spatk=45, spdef=90, init=80, attacken=2, level=20, currentkp=85, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Evoli(pokemon):
+    def __init__(self, name="Evoli", maxkp=55, typ=["Normal"], atk=55, defence=50, spatk=45, spdef=65, init=55, attacken=2, level=1, currentkp=55, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Aquana(pokemon):
+    def __init__(self, name="Aquana", maxkp=130, typ=["Wasser"], atk=65, defence=60, spatk=110, spdef=95, init=65, attacken=2, level=1, currentkp=130, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Blitza(pokemon):
+    def __init__(self, name="Blitza", maxkp=65, typ=["Elektro"], atk=65, defence=60, spatk=110, spdef=95, init=130, attacken=2, level=1, currentkp=65, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Flamara(pokemon):
+    def __init__(self, name="Flamara", maxkp=65, typ=["Feuer"], atk=130, defence=60, spatk=95, spdef=110, init=65, attacken=2, level=1, currentkp=65, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Psiana(pokemon):
+    def __init__(self, name="Psiana", maxkp=65, typ=["Psycho"], atk=65, defence=60, spatk=130, spdef=95, init=110, attacken=2, level=1, currentkp=65, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Nachtara(pokemon):
+    def __init__(self, name="Nachtara", maxkp=95, typ=["Unlicht"], atk=65, defence=110, spatk=60, spdef=130, init=65, attacken=2, level=1, currentkp=95, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Folipurba(pokemon):
+    def __init__(self, name="Folipurba", maxkp=65, typ=["Pflanze"], atk=110, defence=130, spatk=60, spdef=65, init=95, attacken=2, level=1, currentkp=65, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Glaziola(pokemon):
+    def __init__(self, name="Glaziola", maxkp=65, typ=["Eis"], atk=60, defence=110, spatk=130, spdef=95, init=65, attacken=2, level=1, currentkp=65, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Feelinara(pokemon):
+    def __init__(self, name="Feelinara", maxkp=95, typ=["Fee"], atk=65, defence=65, spatk=110, spdef=130, init=60, attacken=2, level=1, currentkp=95, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Pampuli(pokemon):
+    def __init__(self, name="Pampuli", maxkp=70, typ=["Boden"], atk=100, defence=70, spatk=45, spdef=70, init=45, attacken=2, level=1, currentkp=70, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Pampross(pokemon):
+    def __init__(self, name="Pampross", maxkp=100, typ=["Boden"], atk=125, defence=100, spatk=55, spdef=85, init=35, attacken=2, level=10, currentkp=100, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Fluffeluff(pokemon):
+    def __init__(self, name="Fluffeluff", maxkp=90, typ=["Normal","Fee"], atk=30, defence=15, spatk=40, spdef=20, init=15, attacken=2, level=1, currentkp=90, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Pummeluff(pokemon):
+    def __init__(self, name="Pummeluff", maxkp=115, typ=["Normal","Fee"], atk=45, defence=20, spatk=45, spdef=25, init=20, attacken=2, level=10, currentkp=115, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Knuddeluff(pokemon):
+    def __init__(self, name="Knuddeluff", maxkp=140, typ=["Normal","Fee"], atk=70, defence=45, spatk=85, spdef=50, init=45, attacken=2, level=20, currentkp=140, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Tauros(pokemon):
+    def __init__(self, name="Tauros", maxkp=75, typ=["Normal"], atk=100, defence=95, spatk=40, spdef=70, init=110, attacken=2, level=1, currentkp=75, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Miltank(pokemon):
+    def __init__(self, name="Miltank", maxkp=95, typ=["Normal"], atk=80, defence=105, spatk=40, spdef=70, init=100, attacken=2, level=1, currentkp=95, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Gehweiher(pokemon):
+    def __init__(self, name="Gehweiher", maxkp=40, typ=["Käfer","Wasser"], atk=30, defence=32, spatk=50, spdef=52, init=65, attacken=2, level=1, currentkp=40, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Maskeregen(pokemon):
+    def __init__(self, name="Maskeregen", maxkp=70, typ=["Käfer","Flug"], atk=60, defence=62, spatk=100, spdef=82, init=80, attacken=2, level=10, currentkp=70, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Araqua(pokemon):
+    def __init__(self, name="Araqua", maxkp=38, typ=["Wasser","Käfer"], atk=40, defence=52, spatk=40, spdef=72, init=27, attacken=2, level=1, currentkp=38, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Aranestro(pokemon):
+    def __init__(self, name="Aranestro", maxkp=68, typ=["Wasser","Käfer"], atk=70, defence=92, spatk=50, spdef=132, init=42, attacken=2, level=10, currentkp=68, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Imantis(pokemon):
+    def __init__(self, name="Imantis", maxkp=40, typ=["Pflanze"], atk=55, defence=35, spatk=50, spdef=35, init=35, attacken=2, level=1, currentkp=40, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Mantidea(pokemon):
+    def __init__(self, name="Mantidea", maxkp=70, typ=["Pflanze"], atk=105, defence=90, spatk=80, spdef=90, init=45, attacken=2, level=1, currentkp=70, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Bubungus(pokemon):
+    def __init__(self, name="Bubungus", maxkp=50, typ=["Pflanze","Fee"], atk=35, defence=55, spatk=65, spdef=75, init=15, attacken=2, level=1, currentkp=50, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Lamellux(pokemon):
+    def __init__(self, name="Lamellux", maxkp=60, typ=["Pflanze","Fee"], atk=75, defence=80, spatk=90, spdef=100, init=30, attacken=2, level=10, currentkp=60, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Paras(pokemon):
+    def __init__(self, name="Paras", maxkp=35, typ=["Käfer","Pflanze"], atk=70, defence=55, spatk=45, spdef=55, init=25, attacken=2, level=1, currentkp=35, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Parasek(pokemon):
+    def __init__(self, name="Parasek", maxkp=60, typ=["Käfer","Pflanze"], atk=95, defence=80, spatk=60, spdef=80, init=30, attacken=2, level=10, currentkp=60, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Quapsel(pokemon):
+    def __init__(self, name="Quapsel", maxkp=44, typ=["Wasser","Kampf"], atk=50, defence=43, spatk=40, spdef=40, init=65, attacken=2, level=1, currentkp=44, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Quaputzi(pokemon):
+    def __init__(self, name="Quaputzi", maxkp=65, typ=["Wasser","Kampf"], atk=65, defence=65, spatk=50, spdef=50, init=90, attacken=2, level=10, currentkp=65, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Quappo(pokemon):
+    def __init__(self, name="Quappo", maxkp=90, typ=["Wasser","Kampf"], atk=95, defence=95, spatk=70, spdef=90, init=70, attacken=2, level=20, currentkp=90, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Quaxo(pokemon):
+    def __init__(self, name="Quaxo", maxkp=90, typ=["Wasser"], atk=75, defence=75, spatk=90, spdef=100, init=70, attacken=2, level=20, currentkp=90, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Goldini(pokemon):
+    def __init__(self, name="Goldini", maxkp=45, typ=["Wasser"], atk=67, defence=60, spatk=35, spdef=50, init=63, attacken=2, level=1, currentkp=45, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Golking(pokemon):
+    def __init__(self, name="Golking", maxkp=80, typ=["Wasser"], atk=92, defence=65, spatk=65, spdef=80, init=68, attacken=2, level=1, currentkp=80, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Barschwa(pokemon):
+    def __init__(self, name="Barschwa", maxkp=20, typ=["Wasser"], atk=15, defence=20, spatk=10, spdef=55, init=80, attacken=2, level=1, currentkp=20, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Milotic(pokemon):
+    def __init__(self, name="Milotic", maxkp=95, typ=["Wasser"], atk=60, defence=79, spatk=100, spdef=125, init=81, attacken=2, level=10, currentkp=95, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Mamolida(pokemon):
+    def __init__(self, name="Mamolida", maxkp=165, typ=["Wasser"], atk=75, defence=80, spatk=40, spdef=45, init=65, attacken=2, level=1, currentkp=165, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Dartiri(pokemon):
+    def __init__(self, name="Dartiri", maxkp=45, typ=["Normal","Flug"], atk=50, defence=43, spatk=40, spdef=38, init=62, attacken=2, level=1, currentkp=39, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Dartignis(pokemon):
+    def __init__(self, name="Dartignis", maxkp=62, typ=["Feuer","Flug"], atk=73, defence=55, spatk=56, spdef=52, init=84, attacken=2, level=10, currentkp=62, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Fiaro(pokemon):
+    def __init__(self, name="Fiaro", maxkp=78, typ=["Feuer","Flug"], atk=84, defence=78, spatk=109, spdef=85, init=100, attacken=2, level=20, currentkp=78, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Molunk(pokemon):
+    def __init__(self, name="Molunk", maxkp=48, typ=["Gift","Feuer"], atk=44, defence=40, spatk=71, spdef=40, init=77, attacken=2, level=1, currentkp=48, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Amfira(pokemon):
+    def __init__(self, name="Amfira", maxkp=68, typ=["Gift","Feuer"], atk=64, defence=60, spatk=111, spdef=60, init=117, attacken=2, level=10, currentkp=68, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Tragosso(pokemon):
+    def __init__(self, name="Tragosso", maxkp=50, typ=["Feuer"], atk=50, defence=95, spatk=40, spdef=50, init=35, attacken=2, level=1, currentkp=50, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Knogga(pokemon):
+    def __init__(self, name="Knogga", maxkp=60, typ=["Feuer","Geist"], atk=80, defence=110, spatk=50, spdef=80, init=45, attacken=2, level=10, currentkp=60, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Kangama(pokemon):
+    def __init__(self, name="Kangama", maxkp=105, typ=["Normal"], atk=95, defence=80, spatk=40, spdef=80, init=90, attacken=2, level=1, currentkp=105, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Magby(pokemon):
+    def __init__(self, name="Magby", maxkp=45, typ=["Feuer"], atk=75, defence=37, spatk=70, spdef=55, init=83, attacken=2, level=1, currentkp=45, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Magmar(pokemon):
+    def __init__(self, name="Magmar", maxkp=65, typ=["Feuer"], atk=95, defence=57, spatk=100, spdef=85, init=93, attacken=2, level=10, currentkp=65, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Magbrand(pokemon):
+    def __init__(self, name="Magbrand", maxkp=75, typ=["Feuer"], atk=95, defence=67, spatk=125, spdef=95, init=83, attacken=2, level=20, currentkp=75, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Velursi(pokemon):
+    def __init__(self, name="Velursi", maxkp=70, typ=["Normal","Kampf"], atk=75, defence=50, spatk=45, spdef=50, init=50, attacken=2, level=1, currentkp=70, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Kosturso(pokemon):
+    def __init__(self, name="Kosturso", maxkp=120, typ=["Normal","Kampf"], atk=125, defence=80, spatk=55, spdef=60, init=60, attacken=2, level=10, currentkp=120, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Frubberl(pokemon):
+    def __init__(self, name="Frubberl", maxkp=42, typ=["Pflanze"], atk=30, defence=38, spatk=30, spdef=38, init=32, attacken=2, level=1, currentkp=42, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Frubaila(pokemon):
+    def __init__(self, name="Frubaila", maxkp=52, typ=["Pflanze"], atk=40, defence=48, spatk=40, spdef=48, init=62, attacken=2, level=10, currentkp=52, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Fruyal(pokemon):
+    def __init__(self, name="Fruyal", maxkp=72, typ=["Pflanze"], atk=120, defence=98, spatk=50, spdef=98, init=72, attacken=2, level=20, currentkp=72, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Curelei(pokemon):
+    def __init__(self, name="Curelei", maxkp=51, typ=["Fee"], atk=52, defence=90, spatk=82, spdef=110, init=100, attacken=2, level=1, currentkp=51, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Pinsir(pokemon):
+    def __init__(self, name="Pinsir", maxkp=65, typ=["Käfer"], atk=125, defence=100, spatk=55, spdef=70, init=85, attacken=2, level=1, currentkp=65, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Kommandutan(pokemon):
+    def __init__(self, name="Kommandutan", maxkp=90, typ=["Normal","Psycho"], atk=60, defence=80, spatk=90, spdef=110, init=60, attacken=2, level=1, currentkp=60, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Quartermak(pokemon):
+    def __init__(self, name="Quartermak", maxkp=100, typ=["Kampf"], atk=120, defence=90, spatk=40, spdef=60, init=80, attacken=2, level=1, currentkp=100, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Viscora(pokemon):
+    def __init__(self, name="Viscora", maxkp=45, typ=["Drache"], atk=50, defence=35, spatk=55, spdef=75, init=40, attacken=2, level=1, currentkp=45, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Viscargot(pokemon):
+    def __init__(self, name="Viscargot", maxkp=68, typ=["Drache"], atk=75, defence=53, spatk=83, spdef=113, init=60, attacken=2, level=10, currentkp=68, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Viscogon(pokemon):
+    def __init__(self, name="Viscogon", maxkp=90, typ=["Drache"], atk=100, defence=70, spatk=110, spdef=150, init=80, attacken=2, level=20, currentkp=90, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Formeo(pokemon):
+    def __init__(self, name="Formeo", maxkp=70, typ=["Normal"], atk=70, defence=70, spatk=70, spdef=70, init=70, attacken=2, level=1, currentkp=70, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Reißlaus(pokemon):
+    def __init__(self, name="Reißlaus", maxkp=25, typ=["Käfer","Wasser"], atk=25, defence=40, spatk=20, spdef=30, init=80, attacken=2, level=1, currentkp=25, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Tectass(pokemon):
+    def __init__(self, name="Tectass", maxkp=75, typ=["Käfer","Wasser"], atk=125, defence=140, spatk=60, spdef=90, init=40, attacken=2, level=10, currentkp=75, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Sterndu(pokemon):
+    def __init__(self, name="Sterndu", maxkp=30, typ=["Wasser","Psycho"], atk=45, defence=55, spatk=70, spdef=55, init=85, attacken=2, level=1, currentkp=30, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Starmie(pokemon):
+    def __init__(self, name="Starmie", maxkp=60, typ=["Wasser","Psycho"], atk=75, defence=85, spatk=100, spdef=85, init=115, attacken=2, level=10, currentkp=60, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Sankabuh(pokemon):
+    def __init__(self, name="Sankabuh", maxkp=55, typ=["Geist","Boden"], atk=55, defence=80, spatk=70, spdef=45, init=15, attacken=2, level=1, currentkp=55, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Colossand(pokemon):
+    def __init__(self, name="Colossand", maxkp=85, typ=["Geist","Boden"], atk=75, defence=110, spatk=100, spdef=75, init=35, attacken=2, level=10, currentkp=85, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Koknodon(pokemon):
+    def __init__(self, name="Koknodon", maxkp=67, typ=["Gestein"], atk=125, defence=40, spatk=30, spdef=30, init=58, attacken=2, level=1, currentkp=67, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Rameidon(pokemon):
+    def __init__(self, name="Rameidon", maxkp=97, typ=["Gestein"], atk=165, defence=60, spatk=65, spdef=50, init=58, attacken=2, level=10, currentkp=97, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Schilterus(pokemon):
+    def __init__(self, name="Schilterus", maxkp=30, typ=["Gestein","Stahl"], atk=42, defence=118, spatk=42, spdef=88, init=30, attacken=2, level=1, currentkp=30, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Bollterus(pokemon):
+    def __init__(self, name="Bollterus", maxkp=60, typ=["Gestein","Stahl"], atk=52, defence=168, spatk=47, spdef=138, init=30, attacken=2, level=10, currentkp=60, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Flapteryx(pokemon):
+    def __init__(self, name="Flapteryx", maxkp=55, typ=["Gestein","Flug"], atk=112, defence=45, spatk=74, spdef=45, init=70, attacken=2, level=1, currentkp=55, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Aeropteryx(pokemon):
+    def __init__(self, name="Aeropteryx", maxkp=75, typ=["Gestein","Flug"], atk=140, defence=65, spatk=112, spdef=65, init=110, attacken=2, level=10, currentkp=75, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Galapaflos(pokemon):
+    def __init__(self, name="Galapaflos", maxkp=54, typ=["Wasser","Gestein"], atk=78, defence=103, spatk=53, spdef=45, init=22, attacken=2, level=1, currentkp=54, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Karippas(pokemon):
+    def __init__(self, name="Karippas", maxkp=74, typ=["Wasser","Gestein"], atk=108, defence=133, spatk=83, spdef=65, init=32, attacken=2, level=1, currentkp=74, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Paragoni(pokemon):
+    def __init__(self, name="Paragoni", maxkp=43, typ=["Geist","Pflanze"], atk=70, defence=48, spatk=50, spdef=60, init=38, attacken=2, level=1, currentkp=43, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Trombork(pokemon):
+    def __init__(self, name="Trombork", maxkp=85, typ=["Geist","Pflanze"], atk=110, defence=76, spatk=65, spdef=82, init=56, attacken=2, level=10, currentkp=85, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Nasgnet(pokemon):
+    def __init__(self, name="Nasgnet", maxkp=30, typ=["Gestein"], atk=45, defence=135, spatk=45, spdef=90, init=30, attacken=2, level=1, currentkp=30, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Voluminas(pokemon):
+    def __init__(self, name="Voluminas", maxkp=60, typ=["Gestein","Stahl"], atk=55, defence=145, spatk=75, spdef=150, init=40, attacken=2, level=10, currentkp=60, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Gufa(pokemon):
+    def __init__(self, name="Gufa", maxkp=55, typ=["Wasser"], atk=60, defence=130, spatk=30, spdef=130, init=5, attacken=2, level=1, currentkp=55, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Lampi(pokemon):
+    def __init__(self, name="Lampi", maxkp=75, typ=["Wasser","Elektro"], atk=38, defence=38, spatk=56, spdef=56, init=67, attacken=2, level=1, currentkp=75, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Lanturn(pokemon):
+    def __init__(self, name="Lanturn", maxkp=125, typ=["Wasser","Elektro"], atk=58, defence=58, spatk=76, spdef=76, init=67, attacken=2, level=10, currentkp=125, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Typ_Null(pokemon):
+    def __init__(self, name="Typ:Null", maxkp=95, typ=["Normal"], atk=95, defence=95, spatk=95, spdef=95, init=59, attacken=2, level=1, currentkp=95, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Amigento(pokemon):
+    def __init__(self, name="Amigento", maxkp=95, typ=["Normal"], atk=95, defence=95, spatk=95, spdef=95, init=95, attacken=2, level=1, currentkp=95, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Unratütox(pokemon):
+    def __init__(self, name="Unratütox", maxkp=50, typ=["Gift"], atk=50, defence=62, spatk=40, spdef=62, init=65, attacken=2, level=1, currentkp=50, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Deponitox(pokemon):
+    def __init__(self, name="Deponitox", maxkp=80, typ=["Gift"], atk=95, defence=82, spatk=60, spdef=82, init=75, attacken=2, level=10, currentkp=80, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Panzaeron(pokemon):
+    def __init__(self, name="Panzaeron", maxkp=65, typ=["Stahl","Flug"], atk=80, defence=140, spatk=40, spdef=70, init=70, attacken=2, level=1, currentkp=65, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Ditto(pokemon):
+    def __init__(self, name="Ditto", maxkp=48, typ=["Normal"], atk=48, defence=48, spatk=48, spdef=48, init=48, attacken=2, level=1, currentkp=48, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Pii(pokemon):
+    def __init__(self, name="Pii", maxkp=50, typ=["Fee"], atk=25, defence=28, spatk=45, spdef=55, init=15, attacken=2, level=1, currentkp=50, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Piepi(pokemon):
+    def __init__(self, name="Piepi", maxkp=70, typ=["Fee"], atk=45, defence=48, spatk=60, spdef=65, init=35, attacken=2, level=10, currentkp=70, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Pixi(pokemon):
+    def __init__(self, name="Pixi", maxkp=95, typ=["Fee"], atk=70, defence=73, spatk=95, spdef=90, init=60, attacken=2, level=20, currentkp=95, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Meteno(pokemon):
+    def __init__(self, name="Meteno", maxkp=60, typ=["Gestein","Flug"], atk=60, defence=100, spatk=60, spdef=100, init=60, attacken=2, level=1, currentkp=60, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Tanhel(pokemon):
+    def init__(self, name="Tanhel", maxkp=40, typ=["Stahl","Psycho"], atk=55, defence=80, spatk=35, spdef=60, init=30, attacken=2, level=1, currentkp=50, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Metang(pokemon):
+    def __init__(self, name="Metang", maxkp=60, typ=["Stahl","Psycho"], atk=75, defence=100, spatk=55, spdef=80, init=50, attacken=2, level=10, currentkp=60, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Metagross(pokemon):
+    def __init__(self, name="Metagross", maxkp=80, typ=["Stahl","Psycho"], atk=135, defence=130, spatk=95, spdef=90, init=70, attacken=2, level=20, currentkp=80, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Porygon(pokemon):
+    def __init__(self, name="Porygon", maxkp=65, typ=["Normal"], atk=60, defence=70, spatk=85, spdef=75, init=40, attacken=2, level=1, currentkp=65, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Porygon2(pokemon):
+    def __init__(self, name="Porygon2", maxkp=85, typ=["Normal"], atk=80, defence=90, spatk=105, spdef=95, init=60, attacken=2, level=10, currentkp=85, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Porygon_Z(pokemon):
+    def __init__(self, name="Porygon-Z", maxkp=85, typ=["Normal"], atk=80, defence=70, spatk=135, spdef=75, init=90, attacken=2, level=20, currentkp=85, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Pam_Pam(pokemon):
+    def __init__(self, name="Pam-Pam", maxkp=67, typ=["Kampf"], atk=82, defence=62, spatk=46, spdef=48, init=43, attacken=2, level=1, currentkp=67, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Pandagro(pokemon):
+    def __init__(self, name="Pandagro", maxkp=95, typ=["Kampf","Unlicht"], atk=124, defence=78, spatk=69, spdef=71, init=58, attacken=2, level=10, currentkp=95, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Koalelu(pokemon):
+    def __init__(self, name="Koalelu", maxkp=65, typ=["Normal"], atk=115, defence=65, spatk=75, spdef=95, init=65, attacken=2, level=1, currentkp=65, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Qurtel(pokemon):
+    def __init__(self, name="Qurtel", maxkp=70, typ=["Feuer"], atk=85, defence=140, spatk=85, spdef=70, init=20, attacken=2, level=1, currentkp=70, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Tortunator(pokemon):
+    def __init__(self, name="Tortunator", maxkp=60, typ=["Feuer","Drache"], atk=78, defence=135, spatk=91, spdef=85, init=36, attacken=2, level=1, currentkp=60, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Togedemaru(pokemon):
+    def __init__(self, name="Togedemaru", maxkp=65, typ=["Elektro","Stahl"], atk=98, defence=63, spatk=40, spdef=73, init=96, attacken=2, level=1, currentkp=65, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Elekid(pokemon):
+    def __init__(self, name="Elekid", maxkp=45, typ=["Elektro"], atk=63, defence=37, spatk=65, spdef=55, init=95, attacken=2, level=1, currentkp=45, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Elektek(pokemon):
+    def __init__(self, name="Elektek", maxkp=65, typ=["Elektro"], atk=83, defence=57, spatk=95, spdef=85, init=105, attacken=2, level=10, currentkp=65, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Elevoltek(pokemon):
+    def __init__(self, name="Elevoltek", maxkp=75, typ=["Elektro"], atk=123, defence=67, spatk=95, spdef=85, init=95, attacken=2, level=20, currentkp=75, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Kleinstein(pokemon):
+    def __init__(self, name="Kleinstein", maxkp=40, typ=["Gestein","Elektro"], atk=80, defence=100, spatk=30, spdef=30, init=20, attacken=2, level=1, currentkp=40, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Georok(pokemon):
+    def __init__(self, name="Georok", maxkp=55, typ=["Gestein","Elektro"], atk=95, defence=115, spatk=45, spdef=45, init=35, attacken=2, level=10, currentkp=55, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Geowaz(pokemon):
+    def __init__(self, name="Geowaz", maxkp=80, typ=["Gestein","Elektro"], atk=120, defence=130, spatk=55, spdef=65, init=45, attacken=2, level=20, currentkp=80, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Ganovil(pokemon):
+    def __init__(self, name="Ganovil", maxkp=50, typ=["Boden","Unlicht"], atk=72, defence=35, spatk=35, spdef=35, init=65, attacken=2, level=1, currentkp=50, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Rokkaiman(pokemon):
+    def __init__(self, name="Rokkaiman", maxkp=60, typ=["Boden","Unlicht"], atk=82, defence=45, spatk=45, spdef=45, init=74, attacken=2, level=10, currentkp=60, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Rabigator(pokemon):
+    def __init__(self, name="Rabigator", maxkp=95, typ=["Boden","Unlicht"], atk=117, defence=80, spatk=65, spdef=70, init=92, attacken=2, level=20, currentkp=95, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Knacklion(pokemon):
+    def __init__(self, name="Knacklion", maxkp=45, typ=["Boden"], atk=100, defence=45, spatk=45, spdef=45, init=10, attacken=2, level=1, currentkp=50, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Vibrava(pokemon):
+    def __init__(self, name="Vibrava", maxkp=50, typ=["Boden","Drache"], atk=70, defence=50, spatk=50, spdef=50, init=70, attacken=2, level=10, currentkp=50, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Libelldra(pokemon):
+    def __init__(self, name="Libelldra", maxkp=80, typ=["Boden","Drache"], atk=100, defence=80, spatk=80, spdef=80, init=100, attacken=2, level=20, currentkp=80, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Kaumalat(pokemon):
+    def __init__(self, name="Kaumalat", maxkp=58, typ=["Drache","Boden"], atk=70, defence=45, spatk=40, spdef=45, init=42, attacken=2, level=1, currentkp=58, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Knarksel(pokemon):
+    def __init__(self, name="Knarksel", maxkp=68, typ=["Drache","Boden"], atk=90, defence=65, spatk=50, spdef=55, init=82, attacken=2, level=10, currentkp=68, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Knakrack(pokemon):
+    def __init__(self, name="Knakrack", maxkp=108, typ=["Drache","Boden"], atk=130, defence=95, spatk=80, spdef=85, init=102, attacken=2, level=20, currentkp=108, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Clavion(pokemon):
+    def __init__(self, name="Clavion", maxkp=57, typ=["Stahl","Fee"], atk=80, defence=91, spatk=80, spdef=87, init=75, attacken=2, level=1, currentkp=57, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Mimigma(pokemon):
+    def __init__(self, name="Mimigma", maxkp=55, typ=["Geist","Fee"], atk=90, defence=80, spatk=50, spdef=105, init=96, attacken=2, level=1, currentkp=55, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Knirfish(pokemon):
+    def __init__(self, name="Knirfish", maxkp=68, typ=["Wasser","Psycho"], atk=105, defence=70, spatk=70, spdef=70, init=92, attacken=2, level=1, currentkp=50, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Sen_Long(pokemon):
+    def __init__(self, name="Sen Long", maxkp=78, typ=["Normal","Drache"], atk=60, defence=85, spatk=135, spdef=91, init=36, attacken=2, level=1, currentkp=100, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Absol(pokemon):
+    def __init__(self, name="Absol", maxkp=65, typ=["Unlicht"], atk=130, defence=60, spatk=75, spdef=60, init=75, attacken=2, level=1, currentkp=65, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Schneppke(pokemon):
+    def __init__(self, name="Schneppke", maxkp=50, typ=["Eis"], atk=50, defence=50, spatk=50, spdef=50, init=50, attacken=2, level=1, currentkp=50, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Firnontor(pokemon):
+    def __init__(self, name="Firnontor", maxkp=80, typ=["Eis"], atk=80, defence=80, spatk=80, spdef=80, init=80, attacken=2, level=10, currentkp=80, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Frosdedje(pokemon):
+    def __init__(self, name="Frosdedje", maxkp=70, typ=["Eis","Geist"], atk=80, defence=70, spatk=80, spdef=70, init=110, attacken=2, level=10, currentkp=72, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Sniebel(pokemon):
+    def __init__(self, name="Sniebel", maxkp=55, typ=["Unlicht","Eis"], atk=95, defence=55, spatk=35, spdef=75, init=115, attacken=2, level=1, currentkp=55, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Snibunna(pokemon):
+    def __init__(self, name="Snibunna", maxkp=70, typ=["Unlicht","Eis"], atk=120, defence=65, spatk=45, spdef=85, init=125, attacken=2, level=10, currentkp=60, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Sandan(pokemon):
+    def __init__(self, name="Sandan", maxkp=50, typ=["Eis","Stahl"], atk=75, defence=90, spatk=10, spdef=35, init=40, attacken=2, level=1, currentkp=50, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Sandamer(pokemon):
+    def __init__(self, name="Sandamer", maxkp=75, typ=["Eis","Stahl"], atk=100, defence=120, spatk=25, spdef=65, init=65, attacken=2, level=10, currentkp=75, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Vulpix(pokemon):
+    def __init__(self, name="Vulpix", maxkp=38, typ=["Eis"], atk=41, defence=40, spatk=50, spdef=65, init=65, attacken=2, level=1, currentkp=38, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Vulnona(pokemon):
+    def __init__(self, name="Vulnona", maxkp=73, typ=["Eis","Fee"], atk=76, defence=75, spatk=81, spdef=100, init=109, attacken=2, level=10, currentkp=73, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Gelatini(pokemon):
+    def __init__(self, name="Gelatini", maxkp=36, typ=["Eis"], atk=50, defence=50, spatk=65, spdef=60, init=44, attacken=2, level=1, currentkp=36, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Gelatroppo(pokemon):
+    def __init__(self, name="Gelatroppo", maxkp=51, typ=["Eis"], atk=65, defence=65, spatk=80, spdef=75, init=59, attacken=2, level=10, currentkp=51, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Gelatwino(pokemon):
+    def __init__(self, name="Gelatwino", maxkp=71, typ=["Eis"], atk=95, defence=85, spatk=110, spdef=95, init=79, attacken=2, level=20, currentkp=71, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Snubbull(pokemon):
+    def __init__(self, name="Snubbull", maxkp=60, typ=["Fee"], atk=80, defence=50, spatk=40, spdef=40, init=30, attacken=2, level=1, currentkp=60, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Granbull(pokemon):
+    def __init__(self, name="Granbull", maxkp=90, typ=["Fee"], atk=120, defence=75, spatk=60, spdef=60, init=45, attacken=2, level=10, currentkp=90, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Schalellos(pokemon):
+    def __init__(self, name="Schalellos", maxkp=76, typ=["Wasser"], atk=48, defence=48, spatk=57, spdef=62, init=34, attacken=2, level=1, currentkp=76, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Gastrodon(pokemon):
+    def __init__(self, name="Gastrodon", maxkp=111, typ=["Wasser","Boden"], atk=83, defence=68, spatk=92, spdef=82, init=39, attacken=2, level=10, currentkp=111, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Relicanth(pokemon):
+    def __init__(self, name="Relicanth", maxkp=100, typ=["Wasser","Gestein"], atk=90, defence=130, spatk=45, spdef=65, init=55, attacken=2, level=1, currentkp=100, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Moruda(pokemon):
+    def __init__(self, name="Moruda", maxkp=70, typ=["Wasser","Unlicht"], atk=131, defence=100, spatk=86, spdef=90, init=40, attacken=2, level=1, currentkp=70, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Kanivanha(pokemon):
+    def __init__(self, name="Kanivanha", maxkp=45, typ=["Wasser","Unlicht"], atk=90, defence=20, spatk=65, spdef=20, init=65, attacken=2, level=1, currentkp=50, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Tohaido(pokemon):
+    def __init__(self, name="Tohaido", maxkp=70, typ=["Wasser","Unlicht"], atk=120, defence=40, spatk=95, spdef=40, init=95, attacken=2, level=10, currentkp=70, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Wailmer(pokemon):
+    def __init__(self, name="Wailmer", maxkp=130, typ=["Wasser"], atk=70, defence=35, spatk=70, spdef=35, init=60, attacken=2, level=1, currentkp=130, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Wailord(pokemon):
+    def __init__(self, name="Wailord", maxkp=170, typ=["Wasser"], atk=90, defence=45, spatk=90, spdef=45, init=60, attacken=2, level=20, currentkp=170, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Lapras(pokemon):
+    def __init__(self, name="Lapras", maxkp=130, typ=["Wasser","Eis"], atk=85, defence=80, spatk=85, spdef=95, init=60, attacken=2, level=1, currentkp=130, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Owei(pokemon):
+    def __init__(self, name="Owei", maxkp=60, typ=["Pflanze","Psycho"], atk=40, defence=80, spatk=60, spdef=45, init=40, attacken=2, level=1, currentkp=55, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Kokowei(pokemon):
+    def __init__(self, name="Kokowei", maxkp=95, typ=["Pflanze","Psycho"], atk=105, defence=75, spatk=125, spdef=85, init=45, attacken=2, level=10, currentkp=95, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Miniras(pokemon):
+    def __init__(self, name="Miniras", maxkp=45, typ=["Drache"], atk=55, defence=65, spatk=45, spdef=45, init=45, attacken=2, level=1, currentkp=45, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Mediras(pokemon):
+    def __init__(self, name="Mediras", maxkp=55, typ=["Drache","Kampf"], atk=75, defence=90, spatk=65, spdef=70, init=65, attacken=2, level=10, currentkp=55, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Grandiras(pokemon):
+    def __init__(self, name="Grandiras", maxkp=75, typ=["Drache","Kampf"], atk=110, defence=125, spatk=100, spdef=105, init=85, attacken=2, level=20, currentkp=75, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Emolga(pokemon):
+    def __init__(self, name="Emolga", maxkp=55, typ=["Elektro","Flug"], atk=75, defence=60, spatk=75, spdef=60, init=103, attacken=2, level=1, currentkp=55, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Sichlor(pokemon):
+    def __init__(self, name="Sichlor", maxkp=70, typ=["Käfer","Flug"], atk=110, defence=80, spatk=55, spdef=80, init=105, attacken=2, level=10, currentkp=70, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Scherox(pokemon):
+    def __init__(self, name="Scherox", maxkp=70, typ=["Käfer","Stahl"], atk=130, defence=100, spatk=55, spdef=80, init=65, attacken=2, level=20, currentkp=70, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Kramurx(pokemon):
+    def __init__(self, name="Kramurx", maxkp=60, typ=["Unlicht","Flug"], atk=85, defence=42, spatk=85, spdef=42, init=91, attacken=2, level=1, currentkp=60, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Kramshef(pokemon):
+    def __init__(self, name="Kramshef", maxkp=100, typ=["Unlicht","Flug"], atk=125, defence=52, spatk=105, spdef=52, init=71, attacken=2, level=10, currentkp=100, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Riolu(pokemon):
+    def __init__(self, name="Riolu", maxkp=40, typ=["Kampf"], atk=70, defence=40, spatk=35, spdef=40, init=60, attacken=2, level=1, currentkp=40, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Lucario(pokemon):
+    def __init__(self, name="Lucario", maxkp=70, typ=["Kampf","Stahl"], atk=110, defence=70, spatk=115, spdef=70, init=90, attacken=2, level=10, currentkp=70, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Dratini(pokemon):
+    def __init__(self, name="Dratini", maxkp=41, typ=["Drache"], atk=64, defence=45, spatk=50, spdef=50, init=50, attacken=2, level=1, currentkp=41, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Dragonir(pokemon):
+    def __init__(self, name="Dragonir", maxkp=61, typ=["Drache"], atk=84, defence=65, spatk=70, spdef=70, init=70, attacken=2, level=10, currentkp=61, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Dragoran(pokemon):
+    def __init__(self, name="Dragoran", maxkp=91, typ=["Drache","Flug"], atk=134, defence=95, spatk=100, spdef=100, init=80, attacken=2, level=20, currentkp=91, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Aerodactyl(pokemon):
+    def __init__(self, name="Aerodactyl", maxkp=80, typ=["Gestein","Flug"], atk=105, defence=65, spatk=60, spdef=75, init=130, attacken=2, level=1, currentkp=80, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Kapu_Riki(pokemon):
+    def __init__(self, name="Kapu-Riki", maxkp=70, typ=["Elektro","Fee"], atk=115, defence=85, spatk=95, spdef=75, init=130, attacken=2, level=1, currentkp=70, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Kapu_Fala(pokemon):
+    def __init__(self, name="Kapu-Fala", maxkp=70, typ=["Psycho","Fee"], atk=85, defence=75, spatk=130, spdef=115, init=95, attacken=2, level=1, currentkp=70, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Kapu_Toro(pokemon):
+    def __init__(self, name="Kapu-Toro", maxkp=70, typ=["Pflanze","Fee"], atk=130, defence=115, spatk=85, spdef=95, init=75, attacken=2, level=1, currentkp=70, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Kapu_Kime(pokemon):
+    def __init__(self, name="Kapu-Kime", maxkp=70, typ=["Wasser","Fee"], atk=75, defence=115, spatk=95, spdef=130, init=85, attacken=2, level=1, currentkp=70, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Cosmog(pokemon):
+    def __init__(self, name="Cosmog", maxkp=43, typ=["Psycho"], atk=29, defence=31, spatk=29, spdef=31, init=37, attacken=2, level=1, currentkp=43, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Cosmovum(pokemon):
+    def __init__(self, name="Cosmovum", maxkp=43, typ=["Psycho"], atk=29, defence=131, spatk=29, spdef=131, init=37, attacken=2, level=1, currentkp=43, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Solgaleo(pokemon):
+    def __init__(self, name="Solgaleo", maxkp=137, typ=["Psycho","Stahl"], atk=137, defence=107, spatk=113, spdef=89, init=97, attacken=2, level=1, currentkp=137, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Lunala(pokemon):
+    def __init__(self, name="Lunala", maxkp=137, typ=["Psycho","Geist"], atk=113, defence=89, spatk=137, spdef=107, init=97, attacken=2, level=1, currentkp=137, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Anego(pokemon):
+    def __init__(self, name="Anego", maxkp=109, typ=["Gestein","Gift"], atk=53, defence=47, spatk=127, spdef=131, init=103, attacken=2, level=1, currentkp=109, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Masskito(pokemon):
+    def __init__(self, name="Masskito", maxkp=107, typ=["Käfer","Kampf "], atk=139, defence=139, spatk=53, spdef=53, init=79, attacken=2, level=1, currentkp=107, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Schabelle(pokemon):
+    def __init__(self, name="Schabelle", maxkp=71, typ=["Käfer","Kampf"], atk=137, defence=37, spatk=137, spdef=37, init=151, attacken=2, level=1, currentkp=71, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Voltriant(pokemon):
+    def __init__(self, name="Voltriant", maxkp=83, typ=["Elektro"], atk=89, defence=71, spatk=173, spdef=71, init=83, attacken=2, level=1, currentkp=83, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Kaguron(pokemon):
+    def __init__(self, name="Kaguron", maxkp=97, typ=["Stahl","Flug"], atk=101, defence=103, spatk=107, spdef=101, init=61, attacken=2, level=1, currentkp=97, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Katagami(pokemon):
+    def __init__(self, name="Katagami", maxkp=59, typ=["Stahl","Pflanze"], atk=181, defence=131, spatk=59, spdef=31, init=109, attacken=2, level=1, currentkp=59, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Schlingking(pokemon):
+    def __init__(self, name="Schlingking", maxkp=223, typ=["Unlicht","Drache"], atk=101, defence=53, spatk=97, spdef=53, init=43, attacken=2, level=1, currentkp=223, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Necrozma(pokemon):
+    def __init__(self, name="Necrozma", maxkp=97, typ=["Psycho"], atk=107, defence=101, spatk=127, spdef=89, init=79, attacken=2, level=1, currentkp=97, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Magearna(pokemon):
+    def __init__(self, name="Magearna", maxkp=80, typ=["Stahl","Fee"], atk=95, defence=115, spatk=130, spdef=115, init=65, attacken=2, level=1, currentkp=80, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+class Marshadow(pokemon):
+    def __init__(self, name="Marshadow", maxkp=90, typ=["Kampf","Geist"], atk=125, defence=80, spatk=90, spdef=90, init=125, attacken=2, level=1, currentkp=90, fp=0):
+        super().__init__(name, maxkp, typ, atk, defence, spatk, spdef, init, attacken, level, currentkp, fp)
+
+
+bauz = Bauz()
+arboretoss = Arboretoss()
+silvarro = Silvarro()
+flamiau = Flamiau()
+miezunder = Miezunder()
+fuegro = Fuegro()
+robball = Robball()
+marikeck = Marikeck()
+primarene = Primarene()
+peppeck = Peppeck()
+trompeck = Trompeck()
+tukanon = Tukanon()
+mangunior = Mangunior()
+manguspektor = Manguspektor()
+
+
+
+mabula = Mabula()
+akkup = Akkup()
+donarion = Donarion()
+krabbox = Krabbox()
+krawell = Krawell()
+wommel = Wommel()
+bandelby = Bandelby()
+garstella = Garstella()
+aggrostella = Aggrostella()
+pampuli = Pampuli()
+pampross = Pampross()
+araqua = Araqua()
+aranestro = Aranestro()
+imantis = Imantis()
+mantidea = Mantidea()
+bubungus = Bubungus()
+lamellux = Lamellux()
+molunk = Molunk()
+amfira = Amfira()
+velursi = Velursi()
+kosturso = Kosturso()
+frubberl = Frubberl()
+frubaila = Frubaila()
+fruyal = Fruyal()
+curelei = Curelei()
+kommandutan = Kommandutan()
+quartermak = Quartermak()
+reißlaus = Reißlaus()
+tectass = Tectass()
+sankabuh = Sankabuh()
+colossand = Colossand()
+gufa = Gufa()
+typ_null = Typ_Null()
+amigento = Amigento()
+
+# Alle Pokémon in einer Liste
 all_pokemon = [
-    Bauz, Arboretoss, Silvarro,
-    Flamiau, Miezunder, Fuegro,
-    Robball, Marikeck, Primarene,
-    Peppeck, Trompeck, Tukanon,
-    Mangunior, Manguspektor,
-    Mabula, Akkup, Donarion,
-    Krabbox, Krawell,
-    Wommel, Bandelby,
-    Garstella, Aggrostella,
-    Pampuli, Pampross,
-    Araqua, Aranestro,
-    Imantis, Mantidea,
-    Bubungus, Lamellux,
-    Molunk, Amfira,
-    Velursi, Kosturso,
-    Frubberl, Frubaila, Fruyal,
-    Curelei,
-    Kommandutan, Quartermak,
-    Reißlaus, Tectass,
-    Sankabuh, Colossand,
-    Gufa, Typ_Null, Amigento
+    bauz, arboretoss, silvarro, flamiau, miezunder, fuegro,
+    robball, marikeck, primarene, peppeck, trompeck, tukanon,
+    mangunior, manguspektor, mabula, akkup, donarion, krabbox, krawell,
+    wommel, bandelby, garstella, aggrostella, pampuli, pampross, araqua,
+    aranestro, imantis, mantidea, bubungus, lamellux, molunk, amfira,
+    velursi, kosturso, frubberl, frubaila, fruyal, curelei, kommandutan,
+    quartermak, reißlaus, tectass, sankabuh, colossand, gufa, typ_null, amigento
 ]
 
+
+
+
+
+
+#   Attacken-Objekte
+kratzer = Angriff_Klassen.Kratzer()
+sternschauer = Angriff_Klassen.Sternschauer()
+schallwelle = Angriff_Klassen.Schallwelle()
+risikotackle = Angriff_Klassen.Risikotackle()
+ableithieb = Angriff_Klassen.Ableithieb()
+durchbruch = Angriff_Klassen.Durchbruch()
+fußtritt = Angriff_Klassen.Fußtritt()
+fokusstoß = Angriff_Klassen.Fokusstoß()
+pflücker = Angriff_Klassen.Pflücker()
+orkan = Angriff_Klassen.Orkan()
+fliegen = Angriff_Klassen.Fliegen()
+akrobatik = Angriff_Klassen.Akrobatik()
+giftschock = Angriff_Klassen.Giftschock()
+matschbombe = Angriff_Klassen.Matschbombe()
+giftzahn = Angriff_Klassen.Giftzahn()
+schlammwoge = Angriff_Klassen.Schlammwoge()
+lehmschuss = Angriff_Klassen.Lehmschuss()
+dampfwalze = Angriff_Klassen.Dampfwalze()
+schaufler = Angriff_Klassen.Schaufler()
+erdbeben = Angriff_Klassen.Erdbeben()
+felsgrab = Angriff_Klassen.Felsgrab()
+steinhagel = Angriff_Klassen.Steinhagel()
+juwelenkraft = Angriff_Klassen.Juwelenkraft()
+steinkante = Angriff_Klassen.Steinkante()
+käfertrutz = Angriff_Klassen.Käfertrutz()
+blutsauger = Angriff_Klassen.Blutsauger()
+kehrtwende = Angriff_Klassen.Kehrtwende()
+pollenknödel = Angriff_Klassen.Pollenknödel()
+phantomkraft = Angriff_Klassen.Phantomkraft()
+erstauner = Angriff_Klassen.Erstauner()
+spukball = Angriff_Klassen.Spukball()
+unheilböen = Angriff_Klassen.Unheilböen()
+lichtkanone = Angriff_Klassen.Lichtkanone()
+gigantenhieb = Angriff_Klassen.Gigantenhieb()
+eisenschädel = Angriff_Klassen.Eisenschädel()
+tachyon_schnitt = Angriff_Klassen.TachyonSchnitt()
+feuerzahn = Angriff_Klassen.Feuerzahn()
+flammenwurf = Angriff_Klassen.Flammenwurf()
+einäschern = Angriff_Klassen.Einäschern()
+lohekanonade = Angriff_Klassen.Lohekanonade()
+wasserdüse = Angriff_Klassen.Wasserdüse()
+kalte_dusche = Angriff_Klassen.KalteDusche()
+lehmbrühe = Angriff_Klassen.Lehmbrühe()
+surfer = Angriff_Klassen.Surfer()
+rasierblatt = Angriff_Klassen.Rasierblatt()
+blattwerk = Angriff_Klassen.Blattwerk()
+gigasauger = Angriff_Klassen.Gigasauger()
+strauchler = Angriff_Klassen.Strauchler()
+ladestrahl = Angriff_Klassen.Ladestrahl()
+ladungsstoß = Angriff_Klassen.Ladungsstoß()
+donnerschlag = Angriff_Klassen.Donnerschlag()
+kreuzdonner = Angriff_Klassen.Kreuzdonner()
+psychobeißer = Angriff_Klassen.Psychobeißer()
+konfusion = Angriff_Klassen.Konfusion()
+flächenmacht = Angriff_Klassen.Flächenmacht()
+psychoschneide = Angriff_Klassen.Psychoschneide()
+eissturm = Angriff_Klassen.Eissturm()
+eishammer = Angriff_Klassen.Eishammer()
+eisstrahl = Angriff_Klassen.Eisstrahl()
+blizzardlanze = Angriff_Klassen.Blizzardlanze()
+wutanfall = Angriff_Klassen.Wutanfall()
+drachenrute = Angriff_Klassen.Drachenrute()
+raumschlag = Angriff_Klassen.Raumschlag()
+schuppenrasseln = Angriff_Klassen.Schuppenrasseln()
+biss = Angriff_Klassen.Biss()
+kniefalltrick = Angriff_Klassen.Kniefalltrick()
+klingenschwall = Angriff_Klassen.Klingenschwall()
+finsteraura = Angriff_Klassen.Finsteraura()
+nebelexplosion = Angriff_Klassen.Nebelexplosion()
+zauberschein = Angriff_Klassen.Zauberschein()
+zauberturbo = Angriff_Klassen.Zauberturbo()
+knuddler = Angriff_Klassen.Knuddler()
+
+
+
+#   Liste aller Attacken
 Attacken = [
-    Kratzer, Sternschauer, Schallwelle, Risikotackle,
-    Ableithieb, Durchbruch, Fußtritt, Fokusstoß,
-    Pflücker, Orkan, Fliegen, Akrobatik,
-    Giftschock, Matschbombe, Giftzahn, Schlammwoge,
-    Lehmschuss, Dampfwalze, Schaufler, Erdbeben,
-    Felsgrab, Steinhagel, Juwelenkraft, Steinkante,
-    Käfertrutz, Blutsauger, Kehrtwende, Pollenknödel,
-    Phantomkraft, Erstauner, Spukball, Unheilböen,
-    Lichtkanone, Gigantenhieb, Eisenschädel, TachyonSchnitt,
-    Feuerzahn, Flammenwurf, Einäschern, Lohekanonade, Flammenblitz,
-    Wasserdüse, KalteDusche, Lehmbrühe, Surfer,
-    Rasierblatt, Blattwerk, Gigasauger, Strauchler,
-    Ladestrahl, Ladungsstoß, Donnerschlag, Kreuzdonner,
-    Psychobeißer, Konfusion, Flächenmacht, Psychoschneide,
-    Eissturm, Eishammer, Eisstrahl, Blizzardlanze,
-    Wutanfall, Drachenrute, Raumschlag, Schuppenrasseln,
-    Biss, Kniefalltrick, Klingenschwall, Finsteraura,
-    Nebelexplosion, Zauberschein, Zauberturbo, Knuddler
+    kratzer, sternschauer, schallwelle, risikotackle,
+    ableithieb, durchbruch, fußtritt, fokusstoß,
+    pflücker, orkan, fliegen, akrobatik,
+    giftschock, matschbombe, giftzahn, schlammwoge,
+    lehmschuss, dampfwalze, schaufler, erdbeben,
+    felsgrab, steinhagel, juwelenkraft, steinkante,
+    käfertrutz, blutsauger, kehrtwende, pollenknödel,
+    phantomkraft, erstauner, spukball, unheilböen,
+    lichtkanone, gigantenhieb, eisenschädel, tachyon_schnitt,
+    feuerzahn, flammenwurf, einäschern, lohekanonade,
+    wasserdüse, kalte_dusche, lehmbrühe, surfer,
+    rasierblatt, blattwerk, gigasauger, strauchler,
+    ladestrahl, ladungsstoß, donnerschlag, kreuzdonner,
+    psychobeißer, konfusion, flächenmacht, psychoschneide,
+    eissturm, eishammer, eisstrahl, blizzardlanze,
+    wutanfall, drachenrute, raumschlag, schuppenrasseln,
+    biss, kniefalltrick, klingenschwall, finsteraura,
+    nebelexplosion, zauberschein, zauberturbo, knuddler
 ]
 
 
-root = tk.Tk()
-root.withdraw()
 
+
+
+# Pygame initialisieren
 pygame.init()
 clock = pygame.time.Clock()
 
+# Bildschirmgröße abrufen
 screen_info = pygame.display.Info()
 screen_width = screen_info.current_w
 screen_height = screen_info.current_h
 
+# Fenstergröße
 window_width = int(screen_width * 1)
 window_height = int(screen_height * 1)
 
+# Fenster erstellen
 screen = pygame.display.set_mode((window_width, window_height), pygame.RESIZABLE)
 pygame.display.set_caption("Fregemon")
 
+# FARBEN
 BLACK = '#000000'
 WHITE = (255, 255, 255)
 GRAY = (100, 100, 100)
@@ -141,6 +1777,7 @@ RED = (255, 0, 0)
 BLUE = (0, 192, 255)
 GREEN = (37, 196, 37)
 
+# Bilder laden und wenn nötig resizen
 front_bauz_img = pygame.image.load("pics/front_bauz_img.gif")
 front_bauz_img = pygame.transform.scale(front_bauz_img, (window_width * 0.1, window_height * 0.1))
 front_flamiau_img = pygame.image.load("pics/front_flamiau_img.gif")
@@ -150,10 +1787,11 @@ front_robball_img = pygame.transform.scale(front_robball_img, (window_width * 0.
 pokemon_battlesprite = pygame.image.load("pics/pokemon_battlesprite.png")
 pokemon_battlesprite = pygame.transform.scale(pokemon_battlesprite, (window_width * 1, window_height * 1))
 
+# Schriftart
 font = pygame.font.SysFont(None, 60)
 small_font = pygame.font.SysFont(None, 40)
 
-
+# Button-Funktion
 def draw_button(text, x, y, w, h):
     rect = pygame.Rect(x, y, w, h)
     pygame.draw.rect(screen, WHITE, rect)
@@ -163,240 +1801,42 @@ def draw_button(text, x, y, w, h):
     screen.blit(text_surf, text_rect)
     return rect
 
-
+# Text-Funktion
 def draw_text(text, x, y, color=(255, 255, 255)):
     surf = font.render(text, True, color)
     rect = surf.get_rect(center=(x, y))
     screen.blit(surf, rect)
 
-def load_front_img(pokemon):
-    img = pokemon.front_img
-    if img == None:
-        return
-    full_img = "pics/" + img + ".gif"
-    front_img = pygame.image.load(full_img)
-    front_img = pygame.transform.scale(front_img, (window_width * 0.2, window_height * 0.2))
-    screen.blit(front_img, (window_width * 0.70, window_height * 0.15))
+# Speichern-Funktion - unfertig
+def save(name, pokemon):
+    daten = {
+        "pokemon": []
+    }
 
-def load_back_img(pokemon):
-    img = pokemon.back_img
-    if img == None:
-        return
-    full_img = "pics/" + img + ".gif"
-    back_img = pygame.image.load(full_img)
-    back_img = pygame.transform.scale(back_img, (window_width * 0.2, window_height * 0.2))
-    screen.blit(back_img, (window_width * 0.10, window_height * 0.55))
-
-def save(name, pokemonliste, altar, pokemon_team):
-    if name == "":
-        name = "fregen"
     dateiname = f"{name}.json"
 
-    daten = {
-        "pokemon" : [],
-        "altar" : [],
-        "pokemon_team" : []
-    }
-    
-    for pokemon in pokemonliste:
-        daten["pokemon"].append({
-            "name" : pokemon.name,
-            "typ": pokemon.typ,
-            "level" : pokemon.level,
-            "maxkp" : pokemon.maxkp,
-            "atk" : pokemon.atk,
-            "defence" : pokemon.defence,
-            "spatk" : pokemon.spatk,
-            "spdef" : pokemon.spdef,
-            "init" : pokemon.init,
-            "currentkp" : pokemon.currentkp,
-            "attacke_physic" : pokemon.attacken[0].__class__.__name__,
-            "attacke_special": pokemon.attacken[1].__class__.__name__,
-            "fp" : pokemon.fp,
-            "front_img" : pokemon.front_img,
-            "back_img" : pokemon.back_img
-        })
-
-    daten["altar"].append({
-        "pokemon_bodies" : altar.pokemon_bodies,
-        "trainer_bodies" : altar.trainer_bodies,
-        "sacrifice_count" : altar.sacrifice_count,
-        "fp_amount" : altar.fp_amount
-    })
-
-    for pokemon in pokemon_team:
-        daten["pokemon_team"].append({
-            "name": pokemon.name,
-            "typ": pokemon.typ,
-            "level": pokemon.level,
-            "maxkp": pokemon.maxkp,
-            "atk": pokemon.atk,
-            "defence": pokemon.defence,
-            "spatk": pokemon.spatk,
-            "spdef": pokemon.spdef,
-            "init": pokemon.init,
-            "currentkp": pokemon.currentkp,
-            "attacke_physic": pokemon.attacken[0].__class__.__name__,
-            "attacke_special": pokemon.attacken[1].__class__.__name__,
-            "fp": pokemon.fp,
-            "front_img": pokemon.front_img,
-            "back_img": pokemon.back_img
-        })
-
-    try:
-        with open(dateiname, "w", encoding="utf-8") as f:
-            json.dump(daten, f, indent=4, ensure_ascii=False)
-    except Exception as e:
-        print(f"Fehler beim Speichern: {e}")
-
-def load(Attacken):
-    dateipfad = filedialog.askopenfilename(
-        title="Datei auswählen",
-        filetypes=(("JSON-Dateien", "*.json"), ("Alle Dateien", "*.*"))
-    )
-
-    name = os.path.splitext(os.path.basename(dateipfad))[0]
-
-    pokemonliste = []
-    pokemon_team = []
-
-    try:
-        with open(dateipfad, "r", encoding="utf-8") as f:
-            daten = json.load(f)
-    except FileNotFoundError:
-        print(f"Datei {dateipfad} nicht gefunden.")
-        return [], []
-    except json.JSONDecodeError:
-        print(f"Fehler beim Lesen der JSON-Datei.")
-        return [], []
-
-    for p in daten.get("pokemon", []):
-        pokemon = Pokemon(p["name"],
-                          p["maxkp"],
-                          p["typ"],
-                          p["atk"],
-                          p["defence"],
-                          p["spatk"],
-                          p["spdef"],
-                          p["init"],
-                          [p["attacke_physic"], p["attacke_special"]],
-                          p["level"],
-                          p["currentkp"],
-                          p["fp"],
-                          p["front_img"],
-                          p["back_img"])
-        for poke in pokemonliste:
-            if pokemon.name == poke.name:
-                pokemon = poke
-        for atk in Attacken:
-            if pokemon.attacken[0] == atk().__class__.__name__:
-                pokemon.attacken[0] = atk()
-        for atk in Attacken:
-            if pokemon.attacken[1] == atk().__class__.__name__:
-                pokemon.attacken[1] = atk()
-        pokemonliste.append(pokemon)
-
-    for p in daten.get("pokemon_team", []):
-        pokemon = Pokemon(p["name"],
-                          p["maxkp"],
-                          p["typ"],
-                          p["atk"],
-                          p["defence"],
-                          p["spatk"],
-                          p["spdef"],
-                          p["init"],
-                          [p["attacke_physic"], p["attacke_special"]],
-                          p["level"],
-                          p["currentkp"],
-                          p["fp"],
-                          p["front_img"],
-                          p["back_img"])
-        for poke in pokemonliste:
-            if pokemon.name == poke.name:
-                pokemon = poke
-        for atk in Attacken:
-            if pokemon.attacken[0] == atk().__class__.__name__:
-                pokemon.attacken[0] = atk()
-        for atk in Attacken:
-            if pokemon.attacken[1] == atk().__class__.__name__:
-                pokemon.attacken[1] = atk()
-        pokemon_team.append(pokemon)
-
-    spieler = Spieler(name, pokemonliste, pokemon_team[0], pokemon_team)
-
-    for a in daten.get("altar", []):
-        altar = Altar_For_Sacrifices(a["pokemon_bodies"],
-                                     a["trainer_bodies"],
-                                     a["sacrifice_count"],
-                                     a["fp_amount"])
-
-    return spieler, altar
-
-def zufalls_attacke(typ = None, dmgtype = None):
-    gefiltert = []
-    for cls in Attacken:
-        instanz = cls()
-        if (typ is None or instanz.typ == typ) and (dmgtype is None or instanz.dmgtype == dmgtype):
-            gefiltert.append(cls)
-
-    if not gefiltert:
-        raise ValueError(f"Keine Attacke gefunden mit Typ={typ} und dmgtype={dmgtype}")
-
-    return random.choice(gefiltert)()
-
-def filter_pokemon_by_level(all_pokemon):
-    filtered_list = []
-    for poke in all_pokemon:
-        if poke().level <= get_average_stat("level", "poketeam"):
-            filtered_list.append(poke)
-    return filtered_list
-
-def make_enemy_team(enemy_number):
-    enemy_team = []
-    for i in range(enemy_number):
-        pokemon = random.choice(filter_pokemon_by_level(all_pokemon))
-        enemy_team.append(pokemon(attacken=[zufalls_attacke(dmgtype="physisch", typ=getattr(pokemon(), "typ")[0]), zufalls_attacke(dmgtype="spezial", typ=getattr(pokemon(), "typ")[0])]))
-    return enemy_team
-
-
-def get_average_stat(stat, place):
-    count = 0
-    average_stat = 0
-    if place == "poketeam":
-        place = spieler.pokemon_team
-    elif place == "pokelist":
-        place = spieler.pokemonliste
-    for poke in place:
-        count += 1
-        average_stat += getattr(poke, stat)
-    return average_stat // count
-
-
+# Input Box für Spielername
 input_box = pygame.Rect(window_width * 0.35, window_height * 0.40, window_width * 0.30, window_height * 0.06)
 player_name = ""
 active_input = False
-show_confirm_quit = False
-confirm_quit_button = None
-cancel_quit_button = None
 
+# Menüstatus
 menu_state = "start_menu"
-
 selected_pokemon_name = None
-selected_pokemon = None
-battle = None
-battle_log_text = []
-view_pokemon_stats_button_list = []
 
-
+# Hauptschleife
 running = True
 while running:
-    clock.tick(20)
+    clock.tick(60)  # 60 FPS
+    # Hintergrund füllen
     screen.blit(pokemon_battlesprite, (window_width * 0, window_height * 0))
 
     for event in pygame.event.get():
+        # Prüfen ob Fenster Spiel geschlossen wurde
         if event.type == pygame.QUIT:
             running = False
 
+        # Prüfen ob linke Maustaste geklickt wurde
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = event.pos
 
@@ -412,8 +1852,7 @@ while running:
                 if new_player_button.collidepoint(mouse_pos):
                     menu_state = "new_player"
                 elif load_game_button.collidepoint(mouse_pos):
-                    spieler, altar = load(Attacken)
-                    menu_state = "main_menu"
+                    print("Spielstand laden ausgewählt")
                 elif back_button.collidepoint(mouse_pos):
                     menu_state = "start_menu"
 
@@ -434,56 +1873,41 @@ while running:
                     menu_state = "game_selection"
                 elif choose_bauz_button.collidepoint(mouse_pos):
                     menu_state = "main_menu"
-                    altar = Altar_For_Sacrifices(1, 1, 0)
-                    starter_pokemon = Bauz(attacken=[Rasierblatt(), Fliegen()], fp=5)
-                    spieler = Spieler(player_name, [starter_pokemon], starter_pokemon, [starter_pokemon])
+                    spieler = Spieler(player_name, [bauz], bauz, [bauz])
                 elif choose_flamiau_button.collidepoint(mouse_pos):
                     menu_state = "main_menu"
-                    altar = Altar_For_Sacrifices(1, 5, 0)
-                    starter_pokemon = Flamiau(attacken=[Feuerzahn(), Flammenwurf()], fp=5)
-                    spieler = Spieler(player_name, [starter_pokemon], starter_pokemon, [starter_pokemon])
+                    spieler = Spieler(player_name, [flamiau], flamiau, [flamiau])
                 elif choose_robball_button.collidepoint(mouse_pos):
                     menu_state = "main_menu"
-                    altar = Altar_For_Sacrifices(1, 1, 0)
-                    starter_pokemon = Robball(attacken=[Wasserdüse(), KalteDusche()], fp=5)
-                    spieler = Spieler(player_name, [starter_pokemon], starter_pokemon, [starter_pokemon])
+                    spieler = Spieler(player_name, [robball], robball, [robball])
 
 
             # Hauptmenü
             elif menu_state == "main_menu":
-                enemys = ["Team Fregen Rüpel", "Nick Fregen"]
-                enemy_text = random.choices(enemys, weights=[99, 1], k=1)[0]
                 if save_button.collidepoint(mouse_pos):
-                    save(player_name, spieler.pokemonliste, altar, spieler.pokemon_team)
+                    print(f"Trainer: {player_name}")
                 elif start_combat_button.collidepoint(mouse_pos):
                     menu_state = "start_combat"
                 elif view_pokemon_button.collidepoint(mouse_pos):
                     menu_state = "view_pokemon"
                 elif altar_for_sacrifices_button.collidepoint(mouse_pos):
                     menu_state = "altar_for_sacrifices"
-                    continue
                 elif quit_button.collidepoint(mouse_pos):
-                    show_confirm_quit = True
-                elif show_confirm_quit == True:
-                    if confirm_quit_button.collidepoint(mouse_pos):
-                        running = False
-                    elif cancel_quit_button.collidepoint(mouse_pos):
-                        show_confirm_quit = False
+                    running = False
 
             # Kampf annehmen
             elif menu_state == "start_combat":
                 if back_button.collidepoint(mouse_pos):
                     menu_state = "main_menu"
-                elif accept_button.collidepoint(mouse_pos) and len(spieler.pokemon_team) > 0:
+                elif accept_button.collidepoint(mouse_pos):
                     menu_state = "combat_menu"
-                    enemy_team = make_enemy_team(len(spieler.pokemon_team))
-                    enemy = Enemy(enemy_text, enemy_team, enemy_team[0], enemy_team)
-                    battle = Battle(spieler.pokemon_team[0], spieler.pokemon_team, None, enemy.active_pokemon, enemy.pokemon_team, altar)
+                    random_pokemon = random.choice(all_pokemon)
+                    enemy = Enemy("Team Fregen Rüpel", [random_pokemon], random_pokemon, [random_pokemon])    # müssen wir noch ändern
 
             # Kampf Aktion wählen
             elif menu_state == "combat_menu":
                 if fight_button.collidepoint(mouse_pos):
-                    menu_state = "choose_attack"
+                    menu_state = "choose_attack"    # placeholder maybe
                 elif swap_pokemon_button.collidepoint(mouse_pos):
                     menu_state = "swap_pokemon"
 
@@ -491,57 +1915,25 @@ while running:
             elif menu_state == "choose_attack":
                 if attack1_button.collidepoint(mouse_pos):
                     menu_state = "combat_menu"
-                    log = battle.player_attack_physic()
-                    if log == "game_over_player":
-                        print("Gegner hat gewonnen")
-                        menu_state = "fight_overview"
-                    elif log == "game_over_enemy":
-                        print("Spieler hat gewonnen")
-                        menu_state = "fight_overview"
-                        altar.trainer_bodies += 1
                 elif attack2_button.collidepoint(mouse_pos):
                     menu_state = "combat_menu"
-                    log = battle.player_attack_special()
-                    if log == "game_over_player":
-                        print("Gegner hat gewonnen")
-                        menu_state = "fight_overview"
-                    elif log == "game_over_enemy":
-                        print("Spieler hat gewonnen")
-                        menu_state = "fight_overview"
-                        altar.trainer_bodies += 1
                 elif changed_my_mind_button.collidepoint(mouse_pos):
                     menu_state = "combat_menu"
 
             # Kampf Pokemon wechseln
             elif menu_state == "swap_pokemon":
-                if len(battle.spieler_poke_team) > 1:
-                    if pokemon1_button.collidepoint(mouse_pos) and len(spieler.pokemon_team) > 1:
-                        battle.swap_pokemon_in_battle(1)
-                        menu_state = "combat_menu"
-                if len(battle.spieler_poke_team) > 2:
-                    if pokemon2_button.collidepoint(mouse_pos) and len(spieler.pokemon_team) > 2:
-                        battle.swap_pokemon_in_battle(2)
-                        menu_state = "combat_menu"
-                if len(battle.spieler_poke_team) > 3:
-                    if pokemon3_button.collidepoint(mouse_pos) and len(spieler.pokemon_team) > 3:
-                        battle.swap_pokemon_in_battle(3)
-                        menu_state = "combat_menu"
-                if len(battle.spieler_poke_team) > 4:
-                    if pokemon4_button.collidepoint(mouse_pos) and len(spieler.pokemon_team) > 4:
-                        battle.swap_pokemon_in_battle(4)
-                        menu_state = "combat_menu"
-                if len(battle.spieler_poke_team) > 5:
-                    if pokemon5_button.collidepoint(mouse_pos) and len(spieler.pokemon_team) > 5:
-                        battle.swap_pokemon_in_battle(5)
-                        menu_state = "combat_menu"
+                if pokemon1_button.collidepoint(mouse_pos) and len(spieler.pokemon_team) > 1:
+                    menu_state = "combat_menu"
+                elif pokemon2_button.collidepoint(mouse_pos) and len(spieler.pokemon_team) > 2:
+                    menu_state = "combat_menu"
+                elif pokemon3_button.collidepoint(mouse_pos) and len(spieler.pokemon_team) > 3:
+                    menu_state = "combat_menu"
+                elif pokemon4_button.collidepoint(mouse_pos) and len(spieler.pokemon_team) > 4:
+                    menu_state = "combat_menu"
+                elif pokemon5_button.collidepoint(mouse_pos) and len(spieler.pokemon_team) > 5:
+                    menu_state = "combat_menu"
                 elif changed_my_mind_button.collidepoint(mouse_pos):
                     menu_state = "combat_menu"
-
-            # Kampfergebnisse
-            elif menu_state == "fight_overview":
-                if back_button.collidepoint(mouse_pos):
-                    menu_state = "main_menu"
-                    battle.reset_player_team()
 
             # Pokemon
             elif menu_state == "view_pokemon":
@@ -550,141 +1942,45 @@ while running:
                 elif view_pokemon_stats_button_list:
                     for poke_name, btn in view_pokemon_stats_button_list:
                         if btn.collidepoint(mouse_pos):
-                            selected_pokemon = next(p for p in spieler.pokemonliste if p.name == poke_name)
+                            selected_pokemon_name = poke_name
                             menu_state = "pokemon_stats"
+                            break
 
             # Pokemon Stats
             elif menu_state == "pokemon_stats":
                 if back_button.collidepoint(mouse_pos):
                     menu_state = "view_pokemon"
-                if add_pokemon_to_team_button.collidepoint(mouse_pos):
-                    if len(spieler.pokemon_team) < 6 and selected_pokemon not in spieler.pokemon_team:
-                        spieler.pokemon_team.append(selected_pokemon)
-                    else:
-                        if selected_pokemon in spieler.pokemon_team:
-                            spieler.pokemon_team.remove(selected_pokemon)
-                if physical_attack_button.collidepoint(mouse_pos):
-                    menu_state = "view_physical_attack"
-                if special_attack_button.collidepoint(mouse_pos):
-                    menu_state = "view_special_attack"
-                if add_fp_to_pokemon_button.collidepoint(mouse_pos):
-                    if altar.fp_amount > 0:
-                        altar.fp_amount -= 1
-                        selected_pokemon.fp += 1
-                # KP
-                if pokemon_view_kp_plus_button and pokemon_view_kp_plus_button.collidepoint(mouse_pos):
-                    if selected_pokemon.fp > 0:
-                        selected_pokemon.maxkp += 1
-                        selected_pokemon.fp -= 1
-
-                if pokemon_view_kp_minus_button and pokemon_view_kp_minus_button.collidepoint(mouse_pos):
-                    if selected_pokemon.maxkp > selected_pokemon.base_maxkp:
-                        selected_pokemon.maxkp -= 1
-                        selected_pokemon.fp += 1
-
-                # ATK
-                if pokemon_view_atk_plus_button and pokemon_view_atk_plus_button.collidepoint(mouse_pos):
-                    if selected_pokemon.fp > 0:
-                        selected_pokemon.atk += 1
-                        selected_pokemon.fp -= 1
-
-                if pokemon_view_atk_minus_button and pokemon_view_atk_minus_button.collidepoint(mouse_pos):
-                    if selected_pokemon.atk > selected_pokemon.base_atk:
-                        selected_pokemon.atk -= 1
-                        selected_pokemon.fp += 1
-
-                # DEF
-                if pokemon_view_def_plus_button and pokemon_view_def_plus_button.collidepoint(mouse_pos):
-                    if selected_pokemon.fp > 0:
-                        selected_pokemon.defence += 1
-                        selected_pokemon.fp -= 1
-
-                if pokemon_view_def_minus_button and pokemon_view_def_minus_button.collidepoint(mouse_pos):
-                    if selected_pokemon.defence > selected_pokemon.base_def:
-                        selected_pokemon.defence -= 1
-                        selected_pokemon.fp += 1
-
-                # SPATK
-                if pokemon_view_spatk_plus_button and pokemon_view_spatk_plus_button.collidepoint(mouse_pos):
-                    if selected_pokemon.fp > 0:
-                        selected_pokemon.spatk += 1
-                        selected_pokemon.fp -= 1
-
-                if pokemon_view_spatk_minus_button and pokemon_view_spatk_minus_button.collidepoint(mouse_pos):
-                    if selected_pokemon.spatk > selected_pokemon.base_spatk:
-                        selected_pokemon.spatk -= 1
-                        selected_pokemon.fp += 1
-
-                # SPDEF
-                if pokemon_view_spdef_plus_button and pokemon_view_spdef_plus_button.collidepoint(mouse_pos):
-                    if selected_pokemon.fp > 0:
-                        selected_pokemon.spdef += 1
-                        selected_pokemon.fp -= 1
-
-                if pokemon_view_spdef_minus_button and pokemon_view_spdef_minus_button.collidepoint(mouse_pos):
-                    if selected_pokemon.spdef > selected_pokemon.base_spdef:
-                        selected_pokemon.spdef -= 1
-                        selected_pokemon.fp += 1
-
-                # INIT
-                if pokemon_view_init_plus_button and pokemon_view_init_plus_button.collidepoint(mouse_pos):
-                    if selected_pokemon.fp > 0:
-                        selected_pokemon.init += 1
-                        selected_pokemon.fp -= 1
-
-                if pokemon_view_init_minus_button and pokemon_view_init_minus_button.collidepoint(mouse_pos):
-                    if selected_pokemon.init > selected_pokemon.base_init:
-                        selected_pokemon.init -= 1
-                        selected_pokemon.fp += 1
-
-            # Physische Attacke ansehen
-            elif menu_state == "view_physical_attack":
-                if back_button.collidepoint(mouse_pos):
-                    menu_state = "pokemon_stats"
-                if choose_attack_button.collidepoint(mouse_pos) and altar.trainer_bodies >= altar.change_attack_cost:
-                    menu_state = "choose_new_physical_attack"
-                    altar.trainer_bodies -= altar.change_attack_cost
-                    
-            # Neue Physische Attacke wählen
-            elif menu_state == "choose_new_physical_attack":
-                if back_button.collidepoint(mouse_pos):
-                    menu_state = "view_physical_attack"
-                    altar.trainer_bodies += altar.change_attack_cost
-                elif view_attacken_button_list:
-                    for attacke, btn in view_attacken_button_list:
-                        if btn.collidepoint(mouse_pos):
-                            selected_attack = next(a for a in Attacken if a.__name__ == attacke.__class__.__name__)
-                            selected_pokemon.attacken[0] = selected_attack()
-                            menu_state = "view_physical_attack"
-
-            # Spezial Attacke ansehen
-            elif menu_state == "view_special_attack":
-                if back_button.collidepoint(mouse_pos):
-                    menu_state = "pokemon_stats"
-                if choose_attack_button.collidepoint(mouse_pos) and altar.trainer_bodies >= altar.change_attack_cost:
-                    menu_state = "choose_new_special_attack"
-                    altar.trainer_bodies -= altar.change_attack_cost
-
-            # Neue Spezial Attacke wählen
-            elif menu_state == "choose_new_special_attack":
-                if back_button.collidepoint(mouse_pos):
-                    menu_state = "view_special_attack"
-                    altar.trainer_bodies += altar.change_attack_cost
-                elif view_attacken_button_list:
-                    for attacke, btn in view_attacken_button_list:
-                        if btn.collidepoint(mouse_pos):
-                            selected_attack = next(a for a in Attacken if a.__name__ == attacke.__class__.__name__)
-                            selected_pokemon.attacken[1] = selected_attack()
-                            menu_state = "view_special_attack"
+                elif pokemon_view_kp_plus_button.collidepoint(mouse_pos):
+                    print("pokemon +1 kp -1 fp")    # +1kp -1fp
+                elif pokemon_view_kp_minus_button.collidepoint(mouse_pos):
+                    print("pokemon -1 kp +1 fp")    # -1kp +1fp
+                elif pokemon_view_atk_plus_button.collidepoint(mouse_pos):
+                    print("pokemon +1 atk -1 fp")   # +1atk -1fp
+                elif pokemon_view_atk_minus_button.collidepoint(mouse_pos):
+                    print("pokemon -1 atk +1 fp")   # -1atk +1fp
+                elif pokemon_view_def_plus_button.collidepoint(mouse_pos):
+                    print("pokemon +1 def -1 fp")   # +1def -1fp
+                elif pokemon_view_def_minus_button.collidepoint(mouse_pos):
+                    print("pokemon -1 def +1 fp")   # -1def +1fp
+                elif pokemon_view_spatk_plus_button.collidepoint(mouse_pos):
+                    print("pokemon +1 spatk -1 fp")   # +1spatk -1fp
+                elif pokemon_view_spatk_minus_button.collidepoint(mouse_pos):
+                    print("pokemon -1 spatk +1 fp")   # -1spatk +1fp
+                elif pokemon_view_spdef_plus_button.collidepoint(mouse_pos):
+                    print("pokemon +1 spdef -1 fp")   # +1spdef -1fp
+                elif pokemon_view_spdef_minus_button.collidepoint(mouse_pos):
+                    print("pokemon -1 spdef +1 fp")   # -1spdef +1fp
+                elif pokemon_view_init_plus_button.collidepoint(mouse_pos):
+                    print("pokemon +1 init -1 fp")   # +1init -1fp
+                elif pokemon_view_init_minus_button.collidepoint(mouse_pos):
+                    print("pokemon -1 init +1 fp")   # -1init +1fp
 
             # Altar zum Opfern
             elif menu_state == "altar_for_sacrifices":
                 if back_button.collidepoint(mouse_pos):
                     menu_state = "main_menu"
-                elif sacrifice_for_pokemon_button.collidepoint(mouse_pos):
-                    altar.sacrifice_for_pokemon()
-                elif sacrifice_for_fp_button.collidepoint(mouse_pos):
-                    altar.sacrifice_for_fp()
+                elif sacrifice_button.collidepoint(mouse_pos):
+                    print("du hast etwas geopfert")
 
         # Namen für neuen Spieler bestätigen
         elif event.type == pygame.KEYDOWN and active_input:
@@ -752,119 +2048,85 @@ while running:
         altar_for_sacrifices_button = draw_button("Altar zum Opfern", window_width * 0.40, window_height * 0.60, window_width * 0.20, window_height * 0.06)
         save_button = draw_button("Speichern", window_width * 0.40, window_height * 0.70, window_width * 0.20, window_height * 0.06)
         quit_button = draw_button("Quit", window_width * 0.40, window_height * 0.80, window_width * 0.20, window_height * 0.05)
-        if show_confirm_quit == True:
-            draw_button("",  window_width * 0.35, window_height * 0.30, window_width * 0.30, window_height * 0.30)
-            draw_text("Hast du gespeichert?", window_width * 0.50, window_height * 0.33, BLACK)
-            confirm_quit_button = draw_button("Ja", window_width * 0.375, window_height * 0.36, window_width * 0.25, window_height * 0.04)
-            cancel_quit_button = draw_button("Oh nein!!!", window_width * 0.375, window_height * 0.41, window_width * 0.25, window_height * 0.14)
 
     # Kampf annehmen
     elif menu_state == "start_combat":
         title = font.render("Kämpfen", True, WHITE)
         screen.blit(title, (window_width // 2 - title.get_width() // 2, window_height * 0.2))
-        challenge_text = draw_text(str(enemy_text), window_width * 0.50, window_height * 0.50)
+
+        challenge_text = draw_text(f"Nick Fregen fordert dich zu einem Kampf heraus.", window_width * 0.50, window_height * 0.50)
         accept_button = draw_button("Lass uns kämpfen!", window_width * 0.40, window_height * 0.60, window_width * 0.20, window_height * 0.06)
         back_button = draw_button("Ne kein Bock", window_width * 0.40, window_height * 0.70, window_width * 0.20, window_height * 0.06)
 
     # Kampf Aktion wählen
     elif menu_state == "combat_menu":
-        load_back_img(battle.spieler_active_poke)
-        load_front_img(battle.enemy_active_poke)
-
         fight_button = draw_button("Angreifen", window_width * 0.50, window_height * 0.80, window_width * 0.25, window_height * 0.20)
         swap_pokemon_button = draw_button("Pokemon", window_width * 0.75, window_height * 0.80, window_width * 0.25, window_height * 0.20)
-
+        # Kein richtiger Knopf, nur Text in einem Feld bzw. nur Feld oder Text
         what_do_you_do_text = draw_button("Was willst du machen?", window_width * 0.00, window_height * 0.80, window_width * 0.50, window_height * 0.20)
         # Textfeld von Spieler Pokemon
         ally_pokemon_text_field = draw_button("", window_width * 0.70, window_height * 0.60, window_width * 0.30, window_height * 0.15)
-        pokemon_name_ally_text = draw_text(getattr(battle.spieler_active_poke, "name", None), window_width * 0.85, window_height * 0.625, BLACK)
-        pokemon_level_ally_text = draw_text("Level:" + str(getattr(battle.spieler_active_poke, "level", None)), window_width * 0.75, window_height * 0.700, BLACK)
-        pokemon_hp_ally_text = draw_text(f"HP:{round(getattr(battle.spieler_active_poke, "currentkp", None), 2)}", window_width * 0.90, window_height * 0.675, RED)
-        pokemon_ep_ally_text = draw_text(f"EP:{round(getattr(battle.spieler_active_poke, "ep", None), 2)}", window_width * 0.90, window_height * 0.725, BLUE)
+        pokemon_name_ally_text = draw_text(getattr(spieler.active_pokemon, "name", None), window_width * 0.85, window_height * 0.625, BLACK)
+        pokemon_level_ally_text = draw_text("Level:" + str(getattr(spieler.active_pokemon, "init", None)), window_width * 0.75, window_height * 0.700, BLACK)
+        pokemon_hp_ally_text = draw_text("HP:" + str(getattr(spieler.active_pokemon, "level", None)), window_width * 0.90, window_height * 0.675, RED)
+        pokemon_ep_ally_text = draw_text("EP:" + str(getattr(spieler.active_pokemon, "ep", None)), window_width * 0.90, window_height * 0.725, BLUE)
         # Textfeld von Gegner Pokemon
         enemy_pokemon_text_field = draw_button("", window_width * 0.00, window_height * 0.05, window_width * 0.30, window_height * 0.15)
-        pokemon_name_enemy_text = draw_text(getattr(battle.enemy_active_poke, "name", None), window_width * 0.15, window_height * 0.075, BLACK)
-        pokemon_level_enemy_text = draw_text("Level:" + str(getattr(battle.enemy_active_poke, "level", None)), window_width * 0.05, window_height * 0.150, BLACK)
-        pokemon_hp_enemy_text = draw_text(f"HP:{round(getattr(battle.enemy_active_poke, "currentkp", None), 2)}", window_width * 0.20, window_height * 0.125, RED)
-        pokemon_ep_enemy_text = draw_text("EP:" + str(getattr(battle.enemy_active_poke, "ep", None)), window_width * 0.20, window_height * 0.175, BLUE)
+        pokemon_name_enemy_text = draw_text(getattr(enemy.active_pokemon, "name", None), window_width * 0.15, window_height * 0.075, BLACK)
+        pokemon_level_enemy_text = draw_text("Level:" + str(getattr(enemy.active_pokemon, "level", None)), window_width * 0.05, window_height * 0.150, BLACK)
+        pokemon_hp_enemy_text = draw_text("HP:" + str(getattr(enemy.active_pokemon, "currentkp", None)), window_width * 0.20, window_height * 0.125, RED)
+        pokemon_ep_enemy_text = draw_text("EP:" + str(getattr(enemy.active_pokemon, "ep", None)), window_width * 0.20, window_height * 0.175, BLUE)
 
     # Kampf Attacke wählen
     elif menu_state == "choose_attack":
-        load_back_img(battle.spieler_active_poke)
-        load_front_img(battle.enemy_active_poke)
-
-        attack1_button = draw_button("Physiche-Attacke", window_width * 0.50, window_height * 0.80, window_width * 0.25, window_height * 0.20)
-        attack2_button = draw_button("Spezial-Attacke", window_width * 0.75, window_height * 0.80, window_width * 0.25, window_height * 0.20)
+        attack1_button = draw_button("physische attacke", window_width * 0.50, window_height * 0.80, window_width * 0.25, window_height * 0.20)
+        attack2_button = draw_button("spezialattacke", window_width * 0.75, window_height * 0.80, window_width * 0.25, window_height * 0.20)
         changed_my_mind_button = draw_button("Zurück", window_width * 0.40, window_height * 0.80, window_width * 0.10, window_height * 0.20)
-
+        # Kein richtiger Knopf, nur Text in einem Feld
         what_do_you_do_text = draw_button("Welche Attacke?", window_width * 0.00, window_height * 0.80, window_width * 0.40, window_height * 0.20)
         # Textfeld von Spieler Pokemon
         ally_pokemon_text_field = draw_button("", window_width * 0.70, window_height * 0.60, window_width * 0.30, window_height * 0.15)
-        pokemon_name_ally_text = draw_text(getattr(battle.spieler_active_poke, "name", None), window_width * 0.85, window_height * 0.625, BLACK)
-        pokemon_level_ally_text = draw_text("Level:" + str(getattr(battle.spieler_active_poke, "level", None)), window_width * 0.75, window_height * 0.700, BLACK)
-        pokemon_hp_ally_text = draw_text(f"HP:{round(getattr(battle.spieler_active_poke, "currentkp", None), 2)}", window_width * 0.90, window_height * 0.675, RED)
-        pokemon_ep_ally_text = draw_text(f"EP:{round(getattr(battle.spieler_active_poke, "ep", None), 2)}", window_width * 0.90, window_height * 0.725, BLUE)
+        pokemon_name_ally_text = draw_text(getattr(spieler.active_pokemon, "name", None), window_width * 0.85, window_height * 0.625, BLACK)
+        pokemon_level_ally_text = draw_text("Level:" + str(getattr(spieler.active_pokemon, "init", None)), window_width * 0.75, window_height * 0.700, BLACK)
+        pokemon_hp_ally_text = draw_text("HP:" + str(getattr(spieler.active_pokemon, "level", None)), window_width * 0.90, window_height * 0.675, RED)
+        pokemon_ep_ally_text = draw_text("EP:" + str(getattr(spieler.active_pokemon, "ep", None)), window_width * 0.90, window_height * 0.725, BLUE)
         # Textfeld von Gegner Pokemon
         enemy_pokemon_text_field = draw_button("", window_width * 0.00, window_height * 0.05, window_width * 0.30, window_height * 0.15)
-        pokemon_name_enemy_text = draw_text(getattr(battle.enemy_active_poke, "name", None), window_width * 0.15, window_height * 0.075, BLACK)
-        pokemon_level_enemy_text = draw_text("Level:" + str(getattr(battle.enemy_active_poke, "level", None)), window_width * 0.05, window_height * 0.150, BLACK)
-        pokemon_hp_enemy_text = draw_text(f"HP:{round(getattr(battle.enemy_active_poke, "currentkp", None), 2)}", window_width * 0.20, window_height * 0.125, RED)
-        pokemon_ep_enemy_text = draw_text("EP:" + str(getattr(battle.enemy_active_poke, "ep", None)), window_width * 0.20, window_height * 0.175, BLUE)
+        pokemon_name_enemy_text = draw_text(getattr(enemy.active_pokemon, "name", None), window_width * 0.15, window_height * 0.075, BLACK)
+        pokemon_level_enemy_text = draw_text("Level:" + str(getattr(enemy.active_pokemon, "level", None)), window_width * 0.05, window_height * 0.150, BLACK)
+        pokemon_hp_enemy_text = draw_text("HP:" + str(getattr(enemy.active_pokemon, "currentkp", None)), window_width * 0.20, window_height * 0.125, RED)
+        pokemon_ep_enemy_text = draw_text("EP:" + str(getattr(enemy.active_pokemon, "ep", None)), window_width * 0.20, window_height * 0.175, BLUE)
 
     # Kampf Pokemon wechseln
     elif menu_state == "swap_pokemon":
-        load_back_img(battle.spieler_active_poke)
-        load_front_img(battle.enemy_active_poke)
-
         # Textfeld von Spieler Pokemon
         ally_pokemon_text_field = draw_button("", window_width * 0.70, window_height * 0.60, window_width * 0.30, window_height * 0.15)
-        pokemon_name_ally_text = draw_text(getattr(battle.spieler_active_poke, "name", None), window_width * 0.85, window_height * 0.625, BLACK)
-        pokemon_level_ally_text = draw_text("Level:" + str(getattr(battle.spieler_active_poke, "level", None)), window_width * 0.75, window_height * 0.700, BLACK)
-        pokemon_hp_ally_text = draw_text(f"HP:{round(getattr(battle.spieler_active_poke, "currentkp", None), 2)}", window_width * 0.90, window_height * 0.675, RED)
-        pokemon_ep_ally_text = draw_text(f"EP:{round(getattr(battle.spieler_active_poke, "ep", None), 2)}", window_width * 0.90, window_height * 0.725, BLUE)
+        pokemon_name_ally_text = draw_text(getattr(spieler.active_pokemon, "name", None), window_width * 0.85, window_height * 0.625, BLACK)
+        pokemon_level_ally_text = draw_text("Level:" + str(getattr(spieler.active_pokemon, "init", None)), window_width * 0.75, window_height * 0.700, BLACK)
+        pokemon_hp_ally_text = draw_text("HP:" + str(getattr(spieler.active_pokemon, "level", None)), window_width * 0.90, window_height * 0.675, RED)
+        pokemon_ep_ally_text = draw_text("EP:" + str(getattr(spieler.active_pokemon, "ep", None)), window_width * 0.90, window_height * 0.725, BLUE)
         # Textfeld von Gegner Pokemon
         enemy_pokemon_text_field = draw_button("", window_width * 0.00, window_height * 0.05, window_width * 0.30, window_height * 0.15)
-        pokemon_name_enemy_text = draw_text(getattr(battle.enemy_active_poke, "name", None), window_width * 0.15, window_height * 0.075, BLACK)
-        pokemon_level_enemy_text = draw_text("Level:" + str(getattr(battle.enemy_active_poke, "level", None)), window_width * 0.05, window_height * 0.150, BLACK)
-        pokemon_hp_enemy_text = draw_text(f"HP:{round(getattr(battle.enemy_active_poke, "currentkp", None), 2)}", window_width * 0.20, window_height * 0.125, RED)
-        pokemon_ep_enemy_text = draw_text("EP:" + str(getattr(battle.enemy_active_poke, "ep", None)), window_width * 0.20, window_height * 0.175, BLUE)
-
-        if len(battle.spieler_poke_team) > 1:
-            pokemon1_button = draw_button(battle.spieler_poke_team[1].name, window_width * 0.50, window_height * 0.80, window_width * 0.25, window_height * 0.20)
-        if len(battle.spieler_poke_team) > 2:
-            pokemon2_button = draw_button(battle.spieler_poke_team[2].name, window_width * 0.75, window_height * 0.80, window_width * 0.25, window_height * 0.20)
-        if len(battle.spieler_poke_team) > 3:
-            pokemon3_button = draw_button(battle.spieler_poke_team[3].name, window_width * 0.50, window_height * 0.60, window_width * 0.25, window_height * 0.20)
-        if len(battle.spieler_poke_team) > 4:
-            pokemon4_button = draw_button(battle.spieler_poke_team[4].name, window_width * 0.75, window_height * 0.60, window_width * 0.25, window_height * 0.20)
-        if len(battle.spieler_poke_team) > 5:
-            pokemon5_button = draw_button(battle.spieler_poke_team[5].name, window_width * 0.75, window_height * 0.40, window_width * 0.25, window_height * 0.20)
-
+        pokemon_name_enemy_text = draw_text(getattr(enemy.active_pokemon, "name", None), window_width * 0.15, window_height * 0.075, BLACK)
+        pokemon_level_enemy_text = draw_text("Level:" + str(getattr(enemy.active_pokemon, "level", None)), window_width * 0.05, window_height * 0.150, BLACK)
+        pokemon_hp_enemy_text = draw_text("HP:" + str(getattr(enemy.active_pokemon, "currentkp", None)), window_width * 0.20, window_height * 0.125, RED)
+        pokemon_ep_enemy_text = draw_text("EP:" + str(getattr(enemy.active_pokemon, "ep", None)), window_width * 0.20, window_height * 0.175, BLUE)
+        # aktuelles Pokemon excluded
+        pokemon1_button = draw_button("pokemon1", window_width * 0.50, window_height * 0.80, window_width * 0.25, window_height * 0.20)
+        pokemon2_button = draw_button("pokemon2", window_width * 0.75, window_height * 0.80, window_width * 0.25, window_height * 0.20)
+        pokemon3_button = draw_button("pokemon3", window_width * 0.50, window_height * 0.60, window_width * 0.25, window_height * 0.20)
+        pokemon4_button = draw_button("pokemon4", window_width * 0.75, window_height * 0.60, window_width * 0.25, window_height * 0.20)
+        pokemon5_button = draw_button("pokemon5", window_width * 0.75, window_height * 0.40, window_width * 0.25, window_height * 0.20)
         changed_my_mind_button = draw_button("Zurück", window_width * 0.40, window_height * 0.80, window_width * 0.10, window_height * 0.20)
-
+        # Kein richtiger Knopf, nur Text in einem Feld
         what_do_you_do_text = draw_button("Welches Pokemon?", window_width * 0.00, window_height * 0.80, window_width * 0.40, window_height * 0.20)
-
-    # Kampfübersicht
-    elif menu_state == "fight_overview":
-        title = font.render("Kampfübersicht", True, WHITE)
-        screen.blit(title, (window_width // 2 - title.get_width() // 2, window_height * 0.2))
-
-        pokemon_view_text_field = draw_button("", window_width * 0.30, window_height * 0.29, window_width * 0.40, window_height * 0.50)
-
-        if log == "game_over_player":
-            text1 = "Du hast verloren"
-        elif log == "game_over_enemy":
-            text1 = "Du hast gewonnen"
-
-        draw_text(text1, window_width * 0.50, window_height * 0.35, BLACK)
-
-        back_button = draw_button("Zurück", window_width * 0.40, window_height * 0.70, window_width * 0.20, window_height * 0.06)
 
     # Pokemon
     elif menu_state == "view_pokemon":
         title = font.render("Pokemon", True, WHITE)
         screen.blit(title, (window_width // 2 - title.get_width() // 2, window_height * 0.2))
 
+        # Beispieldatensatz - nur ein Beispiel zum Testen
         pokemonliste = [str(poke.name) for poke in spieler.pokemonliste]
 
         view_pokemon_stats_button_list = []
@@ -886,33 +2148,26 @@ while running:
 
     # Pokemon Stats
     elif menu_state == "pokemon_stats":
-        if selected_pokemon:
-            title = font.render(f"{selected_pokemon.name}", True, WHITE)
+        if selected_pokemon_name:
+            title = font.render(f"{selected_pokemon_name}", True, WHITE)
         else:
             title = font.render("Pokemon Stats", True, WHITE)
 
         screen.blit(title, (window_width // 2 - title.get_width() // 2, window_height * 0.2))
-
-        pokemon_view_text_field = draw_button("", window_width * 0.30, window_height * 0.29, window_width * 0.40, window_height * 0.55)
-
-        # Echte Werte anzeigen
-        draw_text(f"Level: {selected_pokemon.level}", window_width * 0.43, window_height * 0.32, BLACK)
-        draw_text(f"EP: {round(selected_pokemon.ep, 2)}/{round(100 * selected_pokemon.level ** 1.1, 2)}", window_width * 0.43, window_height * 0.37, BLACK)
-        draw_text(f"Typ: {', '.join(selected_pokemon.typ)}", window_width * 0.43, window_height * 0.42, BLACK)
-        draw_text(f"KP: {selected_pokemon.maxkp}", window_width * 0.43, window_height * 0.47, BLACK)
-        draw_text(f"ATK: {selected_pokemon.atk}", window_width * 0.43, window_height * 0.52, BLACK)
-        draw_text(f"DEF: {selected_pokemon.defence}", window_width * 0.43, window_height * 0.57, BLACK)
-        draw_text(f"SPATK: {selected_pokemon.spatk}", window_width * 0.43, window_height * 0.62, BLACK)
-        draw_text(f"SPDEF: {selected_pokemon.spdef}", window_width * 0.43, window_height * 0.67, BLACK)
-        draw_text(f"Initiative: {selected_pokemon.init}", window_width * 0.43, window_height * 0.72, BLACK)
-
-        # FP anzeigen
-        draw_text(f"FP: {selected_pokemon.fp}", window_width * 0.65, window_height * 0.42, BLACK)
-
-        # FFP anzeigen
-        draw_text(f"FFP: {altar.fp_amount}", window_width * 0.65, window_height * 0.38, BLACK)
-        add_fp_to_pokemon_button = draw_button("Convert", window_width * 0.55, window_height * 0.363, window_width * 0.06, window_height * 0.03)
-
+        # Kein richtiger Knopf, nur Text in einem Feld
+        pokemon_view_text_field = draw_button("", window_width * 0.30, window_height * 0.29, window_width * 0.40, window_height * 0.47)
+        # Anzeige der Statuswerte eines Pokemon
+        pokemon_view_level_text = draw_text(f"Level: XX", window_width * 0.43, window_height * 0.32, BLACK)
+        pokemon_view_ep_text = draw_text(f"EP: XX/XX", window_width * 0.43, window_height * 0.37, BLACK)
+        pokemon_view_type_text = draw_text(f"Typ: XXXXX/XXXXX", window_width * 0.43, window_height * 0.42, BLACK)
+        pokemon_view_kp_text = draw_text(f"KP: XX", window_width * 0.43, window_height * 0.47, BLACK)
+        pokemon_view_atk_text = draw_text(f"ATK: XX", window_width * 0.43, window_height * 0.52, BLACK)
+        pokemon_view_def_text = draw_text(f"DEF: XX", window_width * 0.43, window_height * 0.57, BLACK)
+        pokemon_view_spatk_text = draw_text(f"SPATK: XX", window_width * 0.43, window_height * 0.62, BLACK)
+        pokemon_view_spdef_text = draw_text(f"SPDEF: XX", window_width * 0.43, window_height * 0.67, BLACK)
+        pokemon_view_init_text = draw_text(f"Initiative: XX", window_width * 0.43, window_height * 0.72, BLACK)
+        # Freie Statuswertpunkte
+        pokemon_view_fp_text = draw_text(f"FP: XX", window_width * 0.65, window_height * 0.42, BLACK)
         # Buttons zum verteilen der freien Statuswertpunkte
         pokemon_view_kp_plus_button = draw_button("+", window_width * 0.63, window_height * 0.46, window_width * 0.02, window_height * 0.03)
         pokemon_view_kp_minus_button = draw_button("-", window_width * 0.66, window_height * 0.46, window_width * 0.02, window_height * 0.03)
@@ -927,145 +2182,15 @@ while running:
         pokemon_view_init_plus_button = draw_button("+", window_width * 0.63, window_height * 0.71, window_width * 0.02, window_height * 0.03)
         pokemon_view_init_minus_button = draw_button("-", window_width * 0.66, window_height * 0.71, window_width * 0.02, window_height * 0.03)
 
-        physical_attack_button = draw_button(selected_pokemon.attacken[0].__class__.__name__, window_width * 0.32, window_height * 0.79, window_width * 0.16, window_height * 0.04)
-
-        special_attack_button = draw_button(selected_pokemon.attacken[1].__class__.__name__,  window_width * 0.52, window_height * 0.79, window_width * 0.16, window_height * 0.04)
-
-        if selected_pokemon in spieler.pokemon_team:
-            plusorminus = "-"
-        elif selected_pokemon not in spieler.pokemon_team:
-            plusorminus = "+"
-        add_pokemon_to_team_button = draw_button(f"{plusorminus} Team", window_width * 0.32, window_height * 0.74, window_width * 0.16, window_height * 0.04)
-
-        back_button = draw_button("Zurück", window_width * 0.40, window_height * 0.85, window_width * 0.20, window_height * 0.06)
-
-    # Physische Attacke ansehen/wechseln
-    elif menu_state == "view_physical_attack":
-        title = font.render(selected_pokemon.attacken[0].__class__.__name__, True, WHITE)
-        screen.blit(title, (window_width // 2 - title.get_width() // 2, window_height * 0.2))
-
-        attack_view_text_field = draw_button("", window_width * 0.33, window_height * 0.29, window_width * 0.34, window_height * 0.45)
-
-        draw_text(f"Schaden: {selected_pokemon.attacken[0].atkdmg}", window_width * 0.50, window_height * 0.37, BLACK)
-        draw_text(f"Typ: {selected_pokemon.attacken[0].typ}", window_width * 0.50, window_height * 0.42, BLACK)
-        draw_text(f"Attackentyp: {selected_pokemon.attacken[0].dmgtype}", window_width * 0.50, window_height * 0.47, BLACK)
-
-        draw_text(f"Kosten: {altar.change_attack_cost} Besiegte Trainer", window_width * 0.50, window_height * 0.60, BLACK)
-        choose_attack_button = draw_button("Wechseln", window_width * 0.42, window_height * 0.65, window_width * 0.16, window_height * 0.04)
-
-        back_button = draw_button("Zurück", window_width * 0.40, window_height * 0.75, window_width * 0.20, window_height * 0.06)
-
-    # Neue Physische Attacke auswählen
-    elif menu_state == "choose_new_physical_attack":
-        title = font.render("Neue Attacke wählen", True, WHITE)
-        screen.blit(title, (window_width // 2 - title.get_width() // 2, window_height * 0.2))
-
-        alle_attacken = [cls() for cls in Attacken]
-
-        gefilterte_attacken = []
-        for attacke in alle_attacken:
-            if (getattr(attacke, "dmgtype") == "physisch"
-            and getattr(attacke, "typ") in selected_pokemon.typ
-            and attacke.__class__.__name__ != selected_pokemon.attacken[0].__class__.__name__):
-                gefilterte_attacken.append(attacke)
-
-        attackenliste = [attacke for attacke in gefilterte_attacken]
-
-        view_attacken_button_list = []
-
-        width_adder = 0.10
-        height_adder = 0.30
-        line_count = 0
-        for attacke in attackenliste:
-            if line_count == 4:
-                line_count = 0
-                height_adder += 0.08
-                width_adder = 0.10
-            btn = draw_button(
-                attacke.__class__.__name__,
-                window_width * width_adder,
-                window_height * height_adder,
-                window_width * 0.18,
-                window_height * 0.06
-            )
-            view_attacken_button_list.append((attacke, btn))
-            width_adder += 0.20
-            line_count += 1
-
-        back_button = draw_button("Zurück", window_width * 0.40, window_height * 0.85, window_width * 0.20,  window_height * 0.06)
-
-    # Spezial Attacke ansehen/wechseln
-    elif menu_state == "view_special_attack":
-        title = font.render(selected_pokemon.attacken[1].__class__.__name__, True, WHITE)
-        screen.blit(title, (window_width // 2 - title.get_width() // 2, window_height * 0.2))
-
-        attack_view_text_field = draw_button("", window_width * 0.33, window_height * 0.29, window_width * 0.34, window_height * 0.45)
-
-        draw_text(f"Schaden: {selected_pokemon.attacken[1].atkdmg}", window_width * 0.50, window_height * 0.37, BLACK)
-        draw_text(f"Typ: {selected_pokemon.attacken[1].typ}", window_width * 0.50, window_height * 0.42, BLACK)
-        draw_text(f"Attackentyp: {selected_pokemon.attacken[1].dmgtype}", window_width * 0.50, window_height * 0.47, BLACK)
-
-        draw_text(f"Kosten: {altar.change_attack_cost} Besiegte Trainer", window_width * 0.50, window_height * 0.60, BLACK)
-        choose_attack_button = draw_button("Wechseln", window_width * 0.42, window_height * 0.65, window_width * 0.16, window_height * 0.04)
-
-        back_button = draw_button("Zurück", window_width * 0.40, window_height * 0.85, window_width * 0.20, window_height * 0.06)
-
-    # Neue Spezial Attacke auswählen
-    elif menu_state == "choose_new_special_attack":
-        title = font.render("Neue Attacke wählen", True, WHITE)
-        screen.blit(title, (window_width // 2 - title.get_width() // 2, window_height * 0.2))
-
-        alle_attacken = [cls() for cls in Attacken]
-
-        gefilterte_attacken = []
-        for attacke in alle_attacken:
-            if (getattr(attacke, "dmgtype") == "spezial"
-                    and getattr(attacke, "typ") in selected_pokemon.typ
-                    and attacke.__class__.__name__ != selected_pokemon.attacken[1].__class__.__name__):
-                gefilterte_attacken.append(attacke)
-
-        attackenliste = [attacke for attacke in gefilterte_attacken]
-
-        view_attacken_button_list = []
-
-        width_adder = 0.10
-        height_adder = 0.30
-        line_count = 0
-        for attacke in attackenliste:
-            if line_count == 4:
-                line_count = 0
-                height_adder += 0.08
-                width_adder = 0.10
-            btn = draw_button(
-                attacke.__class__.__name__,
-                window_width * width_adder,
-                window_height * height_adder,
-                window_width * 0.18,
-                window_height * 0.06
-            )
-            view_attacken_button_list.append((attacke, btn))
-            width_adder += 0.20
-            line_count += 1
-
-        back_button = draw_button("Zurück", window_width * 0.40, window_height * 0.85, window_width * 0.20, window_height * 0.06)
+        back_button = draw_button("Zurück", window_width * 0.40, window_height * 0.80, window_width * 0.20, window_height * 0.06)
 
     # Altar zum Opfern
     elif menu_state == "altar_for_sacrifices":
         title = font.render("Altar zum Opfern", True, WHITE)
         screen.blit(title, (window_width // 2 - title.get_width() // 2, window_height * 0.2))
 
+        sacrifice_button = draw_button("Opfern", window_width * 0.40, window_height * 0.60, window_width * 0.20, window_height * 0.06)
+        back_button = draw_button("Zurück", window_width * 0.40, window_height * 0.70, window_width * 0.20, window_height * 0.06)
+        # Kein richtiger Knopf, nur Text in einem Feld
         available_bodys_text_field = draw_button("", window_width * 0.35, window_height * 0.40, window_width * 0.30, window_height * 0.15)
-
-        available_trainer_bodys_text = draw_text(f"Besiegte Trainer:{altar.trainer_bodies}", window_width * 0.50, window_height * 0.45, BLACK)
-        available_pokemon_bodys_text = draw_text(f"Besiegte Pokemon:{altar.pokemon_bodies}", window_width * 0.50, window_height * 0.50, BLACK)
-
-        sacrifice_for_pokemon_button = draw_button("Opfern für Pokemon", window_width * 0.40, window_height * 0.57, window_width * 0.20, window_height * 0.06)
-        sacrifice_for_fp_button = draw_button("Opfern für FFP", window_width * 0.40, window_height * 0.65, window_width * 0.20, window_height * 0.06)
-
-        back_button = draw_button("Zurück", window_width * 0.40, window_height * 0.73, window_width * 0.20, window_height * 0.06)
-
-
-    pygame.display.flip()
-
-pygame.quit()
-sys.exit()
+        available_trainer_bodys_text =draw_text("Besiegte Trainer: 0", windo

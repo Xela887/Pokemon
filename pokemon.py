@@ -4,6 +4,10 @@ from Angriff_Klassen import *
 from Pokemon_Klassen import *
 import random
 from Battle_Klasse import Battle
+import json
+import tkinter as tk
+from tkinter import filedialog
+import os
 
 
 class Trainer:
@@ -34,10 +38,10 @@ class Enemy(Trainer):
 
 
 class Altar_For_Sacrifices:
-    def __init__(self, pokemon_bodies, trainer_bodies, fp_amount):
+    def __init__(self, pokemon_bodies, trainer_bodies, fp_amount, sacrifice_count=0):
         self.pokemon_bodies = pokemon_bodies
         self.trainer_bodies = trainer_bodies
-        self.sacrifice_count = 0    # will ich noch für cost scaling nutzen
+        self.sacrifice_count = sacrifice_count
         self.change_attack_cost = 5
         self.sac_for_fp_cost = 5
         self.sac_for_fp_amount = 3
@@ -47,17 +51,24 @@ class Altar_For_Sacrifices:
         if self.pokemon_bodies >= 1 and self.trainer_bodies >= 1:
             self.pokemon_bodies = 0
             self.trainer_bodies = 0
+            new_pokemon = random.choice(all_pokemon)
+            roll_new = False
             while True:
-                new_pokemon = random.choice(all_pokemon)
-                if new_pokemon not in spieler.pokemonliste and getattr(new_pokemon(), "level") <= get_average_stat("level", "pokelist"):
+                for poke in spieler.pokemonliste:
+                    if new_pokemon().name == poke.name:
+                        roll_new = True
+                if roll_new == False:
                     break
+                if roll_new == True:
+                    new_pokemon = random.choice(all_pokemon)
+                    roll_new = False
             spieler.add_pokemon(new_pokemon(attacken=[zufalls_attacke(dmgtype="physisch", typ=getattr(new_pokemon(), "typ")[0]), zufalls_attacke(dmgtype="spezial", typ=getattr(new_pokemon(), "typ")[0])]))
 
     def sacrifice_for_fp(self):
         if self.pokemon_bodies >= self.sac_for_fp_cost:
             amount = self.pokemon_bodies // self.sac_for_fp_cost
             self.pokemon_bodies -= amount * self.sac_for_fp_cost
-            self.fp_amount = amount * self.sac_for_fp_amount
+            self.fp_amount += amount * self.sac_for_fp_amount
 
 
 # Alle Pokemon
@@ -107,7 +118,8 @@ Attacken = [
 ]
 
 
-
+root = tk.Tk()
+root.withdraw()
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -175,14 +187,150 @@ def load_back_img(pokemon):
     back_img = pygame.transform.scale(back_img, (window_width * 0.2, window_height * 0.2))
     screen.blit(back_img, (window_width * 0.10, window_height * 0.55))
 
-# unfertig
-def save(name, pokemon):
-    daten = {
-        "pokemon": []
-    }
-
+def save(name, pokemonliste, altar, pokemon_team):
+    if name == "":
+        name = "fregen"
     dateiname = f"{name}.json"
 
+    daten = {
+        "pokemon" : [],
+        "altar" : [],
+        "pokemon_team" : []
+    }
+    
+    for pokemon in pokemonliste:
+        daten["pokemon"].append({
+            "name" : pokemon.name,
+            "typ": pokemon.typ,
+            "level" : pokemon.level,
+            "maxkp" : pokemon.maxkp,
+            "atk" : pokemon.atk,
+            "defence" : pokemon.defence,
+            "spatk" : pokemon.spatk,
+            "spdef" : pokemon.spdef,
+            "init" : pokemon.init,
+            "currentkp" : pokemon.currentkp,
+            "attacke_physic" : pokemon.attacken[0].__class__.__name__,
+            "attacke_special": pokemon.attacken[1].__class__.__name__,
+            "fp" : pokemon.fp,
+            "front_img" : pokemon.front_img,
+            "back_img" : pokemon.back_img
+        })
+
+    daten["altar"].append({
+        "pokemon_bodies" : altar.pokemon_bodies,
+        "trainer_bodies" : altar.trainer_bodies,
+        "sacrifice_count" : altar.sacrifice_count,
+        "fp_amount" : altar.fp_amount
+    })
+
+    for pokemon in pokemon_team:
+        daten["pokemon_team"].append({
+            "name": pokemon.name,
+            "typ": pokemon.typ,
+            "level": pokemon.level,
+            "maxkp": pokemon.maxkp,
+            "atk": pokemon.atk,
+            "defence": pokemon.defence,
+            "spatk": pokemon.spatk,
+            "spdef": pokemon.spdef,
+            "init": pokemon.init,
+            "currentkp": pokemon.currentkp,
+            "attacke_physic": pokemon.attacken[0].__class__.__name__,
+            "attacke_special": pokemon.attacken[1].__class__.__name__,
+            "fp": pokemon.fp,
+            "front_img": pokemon.front_img,
+            "back_img": pokemon.back_img
+        })
+
+    try:
+        with open(dateiname, "w", encoding="utf-8") as f:
+            json.dump(daten, f, indent=4, ensure_ascii=False)
+    except Exception as e:
+        print(f"Fehler beim Speichern: {e}")
+
+def load(Attacken):
+    dateipfad = filedialog.askopenfilename(
+        title="Datei auswählen",
+        filetypes=(("JSON-Dateien", "*.json"), ("Alle Dateien", "*.*"))
+    )
+
+    name = os.path.splitext(os.path.basename(dateipfad))[0]
+
+    pokemonliste = []
+    pokemon_team = []
+
+    try:
+        with open(dateipfad, "r", encoding="utf-8") as f:
+            daten = json.load(f)
+    except FileNotFoundError:
+        print(f"Datei {dateipfad} nicht gefunden.")
+        return [], []
+    except json.JSONDecodeError:
+        print(f"Fehler beim Lesen der JSON-Datei.")
+        return [], []
+
+    for p in daten.get("pokemon", []):
+        pokemon = Pokemon(p["name"],
+                          p["maxkp"],
+                          p["typ"],
+                          p["atk"],
+                          p["defence"],
+                          p["spatk"],
+                          p["spdef"],
+                          p["init"],
+                          [p["attacke_physic"], p["attacke_special"]],
+                          p["level"],
+                          p["currentkp"],
+                          p["fp"],
+                          p["front_img"],
+                          p["back_img"])
+        for poke in pokemonliste:
+            if pokemon.name == poke.name:
+                pokemon = poke
+        for atk in Attacken:
+            if pokemon.attacken[0] == atk().__class__.__name__:
+                pokemon.attacken[0] = atk()
+        for atk in Attacken:
+            if pokemon.attacken[1] == atk().__class__.__name__:
+                pokemon.attacken[1] = atk()
+        pokemonliste.append(pokemon)
+
+    for p in daten.get("pokemon_team", []):
+        pokemon = Pokemon(p["name"],
+                          p["maxkp"],
+                          p["typ"],
+                          p["atk"],
+                          p["defence"],
+                          p["spatk"],
+                          p["spdef"],
+                          p["init"],
+                          [p["attacke_physic"], p["attacke_special"]],
+                          p["level"],
+                          p["currentkp"],
+                          p["fp"],
+                          p["front_img"],
+                          p["back_img"])
+        for poke in pokemonliste:
+            if pokemon.name == poke.name:
+                pokemon = poke
+        for atk in Attacken:
+            if pokemon.attacken[0] == atk().__class__.__name__:
+                pokemon.attacken[0] = atk()
+        for atk in Attacken:
+            if pokemon.attacken[1] == atk().__class__.__name__:
+                pokemon.attacken[1] = atk()
+        pokemon_team.append(pokemon)
+
+    spieler = Spieler(name, pokemonliste, pokemon_team[0], pokemon_team)
+
+    for a in daten.get("altar", []):
+        altar = Altar_For_Sacrifices(a["pokemon_bodies"],
+                                     a["trainer_bodies"],
+                                     a["sacrifice_count"],
+                                     a["fp_amount"])
+
+    return spieler, altar
 
 def zufalls_attacke(typ = None, dmgtype = None):
     gefiltert = []
@@ -227,6 +375,9 @@ def get_average_stat(stat, place):
 input_box = pygame.Rect(window_width * 0.35, window_height * 0.40, window_width * 0.30, window_height * 0.06)
 player_name = ""
 active_input = False
+show_confirm_quit = False
+confirm_quit_button = None
+cancel_quit_button = None
 
 menu_state = "start_menu"
 
@@ -261,7 +412,8 @@ while running:
                 if new_player_button.collidepoint(mouse_pos):
                     menu_state = "new_player"
                 elif load_game_button.collidepoint(mouse_pos):
-                    print("Spielstand laden ausgewählt")
+                    spieler, altar = load(Attacken)
+                    menu_state = "main_menu"
                 elif back_button.collidepoint(mouse_pos):
                     menu_state = "start_menu"
 
@@ -302,7 +454,7 @@ while running:
                 enemys = ["Team Fregen Rüpel", "Nick Fregen"]
                 enemy_text = random.choices(enemys, weights=[99, 1], k=1)[0]
                 if save_button.collidepoint(mouse_pos):
-                    print(f"Trainer: {player_name}")
+                    save(player_name, spieler.pokemonliste, altar, spieler.pokemon_team)
                 elif start_combat_button.collidepoint(mouse_pos):
                     menu_state = "start_combat"
                 elif view_pokemon_button.collidepoint(mouse_pos):
@@ -311,7 +463,12 @@ while running:
                     menu_state = "altar_for_sacrifices"
                     continue
                 elif quit_button.collidepoint(mouse_pos):
-                    running = False
+                    show_confirm_quit = True
+                elif show_confirm_quit == True:
+                    if confirm_quit_button.collidepoint(mouse_pos):
+                        running = False
+                    elif cancel_quit_button.collidepoint(mouse_pos):
+                        show_confirm_quit = False
 
             # Kampf annehmen
             elif menu_state == "start_combat":
@@ -595,6 +752,11 @@ while running:
         altar_for_sacrifices_button = draw_button("Altar zum Opfern", window_width * 0.40, window_height * 0.60, window_width * 0.20, window_height * 0.06)
         save_button = draw_button("Speichern", window_width * 0.40, window_height * 0.70, window_width * 0.20, window_height * 0.06)
         quit_button = draw_button("Quit", window_width * 0.40, window_height * 0.80, window_width * 0.20, window_height * 0.05)
+        if show_confirm_quit == True:
+            draw_button("",  window_width * 0.35, window_height * 0.30, window_width * 0.30, window_height * 0.30)
+            draw_text("Hast du gespeichert?", window_width * 0.50, window_height * 0.33, BLACK)
+            confirm_quit_button = draw_button("Ja", window_width * 0.375, window_height * 0.36, window_width * 0.25, window_height * 0.04)
+            cancel_quit_button = draw_button("Oh nein!!!", window_width * 0.375, window_height * 0.41, window_width * 0.25, window_height * 0.14)
 
     # Kampf annehmen
     elif menu_state == "start_combat":

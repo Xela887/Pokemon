@@ -1,13 +1,13 @@
-import pygame
-import sys
 from Angriff_Klassen import *
 from Pokemon_Klassen import *
-import random
 from Battle_Klasse import Battle
+import random
+import pygame
+import sys
 import json
+import os
 import tkinter as tk
 from tkinter import filedialog
-import os
 
 
 class Trainer:
@@ -55,7 +55,7 @@ class Altar_For_Sacrifices:
             roll_new = False
             while True:
                 for poke in spieler.pokemonliste:
-                    if new_pokemon().name == poke.name:
+                    if new_pokemon().name == poke.name and new_pokemon().level <= get_average_stat("level", pokelist):
                         roll_new = True
                 if roll_new == False:
                     break
@@ -830,15 +830,15 @@ while running:
         pokemon_ep_enemy_text = draw_text("EP:" + str(getattr(battle.enemy_active_poke, "ep", None)), window_width * 0.20, window_height * 0.175, BLUE)
 
         if len(battle.spieler_poke_team) > 1:
-            pokemon1_button = draw_button(battle.spieler_poke_team[1].__class__.__name__, window_width * 0.50, window_height * 0.80, window_width * 0.25, window_height * 0.20)
+            pokemon1_button = draw_button(battle.spieler_poke_team[1].name, window_width * 0.50, window_height * 0.80, window_width * 0.25, window_height * 0.20)
         if len(battle.spieler_poke_team) > 2:
-            pokemon2_button = draw_button(battle.spieler_poke_team[2].__class__.__name__, window_width * 0.75, window_height * 0.80, window_width * 0.25, window_height * 0.20)
+            pokemon2_button = draw_button(battle.spieler_poke_team[2].name, window_width * 0.75, window_height * 0.80, window_width * 0.25, window_height * 0.20)
         if len(battle.spieler_poke_team) > 3:
-            pokemon3_button = draw_button(battle.spieler_poke_team[3].__class__.__name__, window_width * 0.50, window_height * 0.60, window_width * 0.25, window_height * 0.20)
+            pokemon3_button = draw_button(battle.spieler_poke_team[3].name, window_width * 0.50, window_height * 0.60, window_width * 0.25, window_height * 0.20)
         if len(battle.spieler_poke_team) > 4:
-            pokemon4_button = draw_button(battle.spieler_poke_team[4].__class__.__name__, window_width * 0.75, window_height * 0.60, window_width * 0.25, window_height * 0.20)
+            pokemon4_button = draw_button(battle.spieler_poke_team[4].name, window_width * 0.75, window_height * 0.60, window_width * 0.25, window_height * 0.20)
         if len(battle.spieler_poke_team) > 5:
-            pokemon5_button = draw_button(battle.spieler_poke_team[5].__class__.__name__, window_width * 0.75, window_height * 0.40, window_width * 0.25, window_height * 0.20)
+            pokemon5_button = draw_button(battle.spieler_poke_team[5].name, window_width * 0.75, window_height * 0.40, window_width * 0.25, window_height * 0.20)
 
         changed_my_mind_button = draw_button("Zurück", window_width * 0.40, window_height * 0.80, window_width * 0.10, window_height * 0.20)
 
